@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.activities.SignUpActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/sign_up_input"
+        android:layout_below="@+id/sign_up_toolbar"
+        android:layout_marginTop="32dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/sign_up_icon"
+            android:src="@mipmap/ic_launcher"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="58dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+
+        <EditText
+            android:id="@+id/sign_up_username"
+            android:hint="@string/username"
+            android:singleLine="true"
+            android:inputType="textEmailAddress"
+            android:layout_below="@+id/sign_up_icon"
+            android:layout_marginTop="24dp"
+            android:textColorHint="@color/md_grey_400"
+            android:textColor="@color/md_grey_800"
+            android:textSize="17sp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
+        <EditText
+            android:id="@+id/sign_up_password"
+            android:hint="@string/password"
+            android:inputType="numberPassword"
+            android:singleLine="true"
+            android:textSize="17sp"
+            android:textColorHint="@color/md_grey_400"
+            android:textColor="@color/md_grey_800"
+            android:layout_marginTop="8dp"
+            android:layout_below="@+id/sign_up_username"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/sign_up_btn"
+        android:text="@string/sign_up"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:textSize="19sp"
+        android:textColor="@color/md_grey_100"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>
