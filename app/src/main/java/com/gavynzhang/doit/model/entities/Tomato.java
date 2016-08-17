@@ -8,17 +8,25 @@ import cn.bmob.v3.datatype.BmobDate;
  */
 public class Tomato extends BmobObject{
 
-    private MyUser user;
+    private Event event;
     private BmobDate startTime;
     private Boolean isBroken;
-    private DeadlineEvent eventBelongs;
+    private String brokenReason;
 
-    public DeadlineEvent getEventBelongs() {
-        return eventBelongs;
+    public String getBrokenReason() {
+        return brokenReason;
     }
 
-    public void setEventBelongs(DeadlineEvent eventBelongs) {
-        this.eventBelongs = eventBelongs;
+    public void setBrokenReason(String brokenReason) {
+        this.brokenReason = brokenReason;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public Boolean getBroken() {
@@ -35,13 +43,5 @@ public class Tomato extends BmobObject{
 
     public void setStartTime(BmobDate startTime) {
         this.startTime = startTime;
-    }
-
-    public MyUser getUser() {
-        return user;
-    }
-
-    public void setUser(MyUser user) {
-        this.user = user;
     }
 }

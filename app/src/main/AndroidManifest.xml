@@ -29,15 +29,17 @@
         </activity>
 
         <meta-data
-            android:value="57b166ba67e58ee82e00080b"
-            android:name="UMENG_APPKEY"/>
+            android:name="UMENG_APPKEY"
+            android:value="57b166ba67e58ee82e00080b"/>
         <meta-data
-            android:value="Wandoujia"
-            android:name="UMENG_CHANNEL"/>
+            android:name="UMENG_CHANNEL"
+            android:value="Wandoujia"/>
 
         <activity android:name=".ui.activities.SignInActivity">
         </activity>
         <activity android:name=".ui.activities.SignUpActivity">
+        </activity>
+        <activity android:name=".ui.activities.NewEventActivity">
         </activity>
     </application>
 

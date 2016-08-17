@@ -6,7 +6,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -37,15 +39,28 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
     private String email;
     private String password;
 
+    private Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_sign_up);
         Bmob.initialize(this, "9f9400b18ebbb85039231d8bd0cf24d2");
 
         signUpUsername = $(R.id.sign_up_username);
         signUpUserEmail = $(R.id.sign_up_user_email);
         signUpPassword = $(R.id.sign_up_password);
+        mToolbar = $(R.id.toolbar);
+        mToolbar.setNavigationIcon(R.drawable.back);
+        mToolbar.setTitle("注册");
+        mToolbar.setTitleTextColor(getResources().getColor(R.color.md_grey_100));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         signUpBtn = $(R.id.sign_up_btn);
         signUpBtn.setOnClickListener(this);

@@ -11,52 +11,58 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 
     /**
      * username :所属用户
-     * eventName :事件名称
-     * eventStartTime: 事件开始时间
-     * eventEndTime: 事件结束时间
-     * eventAddress: 事件发生地址
-     * eventRemindTime: 事件提醒时间
-     * eventRemarks: 事件备注
+     * name :事件名称
+     * startTime: 事件开始时间
+     * endTime: 事件结束时间
+     * remindTime: 事件提醒时间
+     * address: 事件发生地址
+     * remarks: 事件备注
+     * tag: 事件标签
+     * isFinish: 是否完成
+     * tomatoNum: 事件所用番茄钟
      * */
-    public static final String CREATE_NORMAL_EVENT = "create table normalEvent(" +
+    public static final String CREATE_EVENT = "create table event(" +
             "id integer primary key autoincrement," +
             "username text, " +
-            "eventName, text" +
-            "eventStartTime text," +
-            "eventEndTime text," +
-            "eventAddress text," +
-            "eventRemindTime text" +
-            "eventRemarks text)";
+            "name, text" +
+            "startTime text," +
+            "endTime text," +
+            "remindTime text" +
+            "address text," +
+            "remarks text," +
+            "tag text," +
+            "isFinish integer)";
+
+//    /**
+//     * username: 所属用户
+//     * eventName: 事件名称
+//     * deadline: 事件截止日期
+//     * eventId: 事件对应Id
+//     * isFinish: 事件是否完成
+//     * eventRemarks: 事件备注
+//     * eventTag: 事件标签
+//     * */
+//    public static final String CREATE_DEADLINE_EVENT = "create table deadlineEvent(" +
+//            "id integer primary key autoincrement," +
+//            "username text," +
+//            "eventName text," +
+//            "deadline text," +
+//            "eventId integer," +
+//            "isFinish integer," +
+//            "eventRemarks text," +
+//            "eventTag text)";
 
     /**
-     * username: 所属用户
-     * eventName: 事件名称
-     * deadline: 事件截止日期
-     * eventId: 事件对应Id
-     * isFinish: 事件是否完成
-     * eventRemarks: 事件备注
-     * */
-    public static final String CREATE_DEADLINE_EVENT = "create table deadlineEvent(" +
-            "id integer primary key autoincrement," +
-            "username text," +
-            "eventName text," +
-            "deadline text," +
-            "eventId integer," +
-            "isFinish integer," +
-            "eventRemarks text)";
-
-    /**
-     * username: 所属用户
+     * eventId: 番茄所对应的事件
      * startTime: 番茄开始时间
      * isBroken: 番茄是否完成
-     * eventId: 番茄所对应的事件
      * */
     public static final String CREATE_TOMATO = "create table tomato(" +
             "id integer primary key autoincrement," +
-            "username text," +
+            "eventId text," +
             "startTime text," +
             "isBroken integer," +
-            "eventId integer)";
+            "brokenReason text)" ;
 
     private Context mContext;
 
@@ -74,8 +80,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_NORMAL_EVENT);
-        db.execSQL(CREATE_DEADLINE_EVENT);
+        db.execSQL(CREATE_EVENT);
         db.execSQL(CREATE_TOMATO);
     }
 

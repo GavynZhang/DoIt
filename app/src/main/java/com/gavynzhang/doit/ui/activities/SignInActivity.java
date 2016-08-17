@@ -2,17 +2,23 @@ package com.gavynzhang.doit.ui.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gavynzhang.doit.R;
 import com.gavynzhang.doit.app.BaseActivity;
+import com.gavynzhang.doit.utils.LogUtils;
 import com.gavynzhang.doit.utils.RegularUtils;
 
 import cn.bmob.v3.Bmob;
@@ -29,6 +35,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private String email;
     private String password;
 
+    private Toolbar mToolbar;
+
 
     public static void actionStart(Context context){
         Intent intent = new Intent(context, SignInActivity.class);
@@ -38,6 +46,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_sign_in);
         Bmob.initialize(this, "9f9400b18ebbb85039231d8bd0cf24d2");
 
@@ -46,12 +55,24 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         userEmail = $(R.id.sign_in_user_email);
         userPassword = $(R.id.sign_in_password);
         signIn = $(R.id.sign_in_btn);
+        mToolbar = $(R.id.toolbar);
+
+        mToolbar.setNavigationIcon(R.drawable.back);
+        mToolbar.setTitle("登录");
+        mToolbar.setTitleTextColor(getResources().getColor(R.color.md_grey_100));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         resetPasswordBtn.setOnClickListener(this);
         createAccountBtn.setOnClickListener(this);
         signIn.setOnClickListener(this);
 
     }
+
 
     @Override
     public void onClick(View view) {
@@ -79,4 +100,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private void login(){
 
     }
+
+
 }
