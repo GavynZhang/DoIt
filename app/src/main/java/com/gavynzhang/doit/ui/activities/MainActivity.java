@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.TextView;
 
 import com.gavynzhang.doit.R;
 import com.gavynzhang.doit.app.BaseActivity;
@@ -38,7 +39,7 @@ public class MainActivity extends BaseActivity
         final Toolbar toolbar = $(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = $(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

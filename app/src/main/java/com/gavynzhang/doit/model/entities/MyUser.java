@@ -14,6 +14,9 @@ public class MyUser extends BmobUser {
         return restDuration;
     }
 
+    /**
+     * @param restDuration:一次番茄钟休息时长
+     */
     public void setRestDuration(Integer restDuration) {
         this.restDuration = restDuration;
     }

@@ -9,8 +9,7 @@
 
     <RelativeLayout
         android:id="@+id/sign_up_input"
-        android:layout_below="@+id/sign_up_toolbar"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="28dp"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:layout_width="match_parent"
@@ -27,11 +26,21 @@
 
         <EditText
             android:id="@+id/sign_up_username"
-            android:hint="@string/username"
-            android:singleLine="true"
-            android:inputType="textEmailAddress"
             android:layout_below="@+id/sign_up_icon"
             android:layout_marginTop="24dp"
+            android:textColorHint="@color/md_grey_400"
+            android:textColor="@color/md_grey_800"
+            android:hint="@string/user_name"
+            android:textSize="17sp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"/>
+        <EditText
+            android:id="@+id/sign_up_user_email"
+            android:hint="@string/user_email"
+            android:singleLine="true"
+            android:inputType="textEmailAddress"
+            android:layout_below="@+id/sign_up_username"
+            android:layout_marginTop="8dp"
             android:textColorHint="@color/md_grey_400"
             android:textColor="@color/md_grey_800"
             android:textSize="17sp"
@@ -40,13 +49,13 @@
         <EditText
             android:id="@+id/sign_up_password"
             android:hint="@string/password"
-            android:inputType="numberPassword"
+            android:inputType="textPassword"
             android:singleLine="true"
             android:textSize="17sp"
             android:textColorHint="@color/md_grey_400"
             android:textColor="@color/md_grey_800"
             android:layout_marginTop="8dp"
-            android:layout_below="@+id/sign_up_username"
+            android:layout_below="@+id/sign_up_user_email"
             android:layout_width="match_parent"
             android:layout_height="40dp"/>
 

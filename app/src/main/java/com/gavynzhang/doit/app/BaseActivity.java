@@ -25,6 +25,9 @@ public class BaseActivity extends AppCompatActivity{
         ActivityCollector.removeActivity(this);
     }
 
+    /**
+     * @param id :view组件对应id
+     * */
     public <T extends View> T $(int id) {
         return (T) findViewById(id);
     }

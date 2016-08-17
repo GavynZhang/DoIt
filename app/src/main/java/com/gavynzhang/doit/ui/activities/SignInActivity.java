@@ -15,6 +15,8 @@ import com.gavynzhang.doit.R;
 import com.gavynzhang.doit.app.BaseActivity;
 import com.gavynzhang.doit.utils.RegularUtils;
 
+import cn.bmob.v3.Bmob;
+
 public class SignInActivity extends BaseActivity implements View.OnClickListener{
 
     private Button resetPasswordBtn;
@@ -27,9 +29,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private String email;
     private String password;
 
-    /**
-     * 用于启动本Activity
-     * */
+
     public static void actionStart(Context context){
         Intent intent = new Intent(context, SignInActivity.class);
         context.startActivity(intent);
@@ -39,10 +39,11 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        Bmob.initialize(this, "9f9400b18ebbb85039231d8bd0cf24d2");
 
         resetPasswordBtn = $(R.id.reset_password_btn);
         createAccountBtn = $(R.id.create_account_btn);
-        userEmail = $(R.id.sign_in_username);
+        userEmail = $(R.id.sign_in_user_email);
         userPassword = $(R.id.sign_in_password);
         signIn = $(R.id.sign_in_btn);
 
