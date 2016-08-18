@@ -90,12 +90,10 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                     Toast.makeText(SignUpActivity.this, "邮箱有误，请重新输入", Toast.LENGTH_SHORT).show();
                     signUpUserEmail.selectAll();
 
-                    if(RegularUtils.isChz(password) || password.length() < 6){
-                        Toast.makeText(SignUpActivity.this, "密码只能是数字，英文，及符号,且长度不小于6位", Toast.LENGTH_SHORT).show();
-                        signUpPassword.selectAll();
-                    }
-
-                }else{
+                } else if(RegularUtils.isChz(password) || password.length() < 6){
+                Toast.makeText(SignUpActivity.this, "密码只能是数字，英文，及符号,且长度不小于6位", Toast.LENGTH_SHORT).show();
+                signUpPassword.selectAll();
+                } else{
                     signUp();
                 }
 
