@@ -23,7 +23,7 @@ public class EventRemindTimePriDialogActivity extends BaseActivity implements Vi
 
     private int nowMode = MODE_NORMAL;
 
-    private TextView dialo_title;
+    private TextView dialog_title;
 
     private TextView level_1_text;
     private TextView level_2_text;
@@ -154,7 +154,7 @@ public class EventRemindTimePriDialogActivity extends BaseActivity implements Vi
                 break;
             case MODE_TOMATO:
 
-                dialo_title.setText("选择优先级");
+                dialog_title.setText("选择优先级");
 
                 level_1_text.setText("优先级 1");
                 level_2_text.setText("优先级 2");
@@ -236,7 +236,7 @@ public class EventRemindTimePriDialogActivity extends BaseActivity implements Vi
      */
     private void initViews(){
 
-        dialo_title = $(R.id.dialog_title);
+        dialog_title = $(R.id.dialog_title);
 
         level_1_text = $(R.id.level_1_text);
         level_2_text = $(R.id.level_2_text);
