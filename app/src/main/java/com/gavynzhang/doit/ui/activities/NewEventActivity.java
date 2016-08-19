@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -75,6 +76,7 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
     private RelativeLayout newEventRelativeStart;
     private ImageView newEventLine3;
     private ImageView eventRemindPriImg;
+    private Button cancelSave;
 
 
 
@@ -114,6 +116,12 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
         mToolbar.setNavigationIcon(R.drawable.back);
         mToolbar.setTitle("新事件");
         mToolbar.setTitleTextColor(getResources().getColor(R.color.md_grey_100));
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
     /**
@@ -146,6 +154,8 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
         eventRemindPriDrop = $(R.id.event_remind_pri_drop);
         //提醒时间及优先级显示文本
         eventRemindTimePriText = $(R.id.event_remind_time_pri_text);
+        //底部取消按钮
+        cancelSave = $(R.id.cancel_save);
     }
 
     /**
@@ -161,6 +171,9 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
 
         //提醒，优先级选择
         eventRemindPriDrop.setOnClickListener(this);
+
+        //取消，保存
+        cancelSave.setOnClickListener(this);
     }
 
     /**
@@ -203,6 +216,9 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
                 break;
             case R.id.event_remind_pri_drop:
                 EventRemindTimePriDialogActivity.actionStart(NewEventActivity.this);
+                break;
+            case R.id.cancel_save:
+                finish();
                 break;
             default:
                 break;

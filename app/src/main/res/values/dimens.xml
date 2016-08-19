@@ -9,4 +9,5 @@
     <dimen name="list_img_margin_start">8dp</dimen>
     <dimen name="event_layout_line_margin_top">8dp</dimen>
     <dimen name="event_relative_layout_margin_top">10dp</dimen>
+    <dimen name="dialog_maegin_top">7dp</dimen>
 </resources>
