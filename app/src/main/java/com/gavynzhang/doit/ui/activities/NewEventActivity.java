@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,13 @@ import java.util.Calendar;
 
 public class NewEventActivity extends BaseActivity implements View.OnClickListener{
 
+    private static final String NORMAL_TEXT_1 = "无提醒";
+    private static final String NORMAL_TEXT_2 = "事件发生时";
+    private static final String NORMAL_TEXT_3 = "提前10分钟";
+    private static final String NORMAL_TEXT_4 = "提前30分钟";
+    private static final String NORMAL_TEXT_5 = "提前1小时";
+    private static final String NORMAL_TEXT_6 = "提前一天";
+
     private static final int MODE_NORMAL = 0;
     private static final int MODE_TOMATO = 1;
 
@@ -46,6 +54,8 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
     private String eventPlaceString;
     private String eventRemarksString;
     private String eventTagString;
+
+    private int priOrRemindLevel;   //pri: 优先级
 
     /**
      * 以下为控件
@@ -99,19 +109,6 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
         initViews();
         setOnClickListener();
 
-        eventModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
-                    setTomatoEventLayout();
-                    nowMode = MODE_TOMATO;
-                }else{
-                    setNormalEventLayout();
-                    nowMode = MODE_NORMAL;
-                }
-            }
-        });
-
         mToolbar = $(R.id.toolbar);
         mToolbar.setNavigationIcon(R.drawable.back);
         mToolbar.setTitle("新事件");
@@ -122,6 +119,25 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
                 finish();
             }
         });
+
+        eventModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+                    //设置为番茄事件布局并给nowMode赋值
+                    setTomatoEventLayout();
+                    nowMode = MODE_TOMATO;
+                    setSavedLevelText();
+                }else{
+                    //设置为普通事件布局并且给nowMode赋值
+                    setNormalEventLayout();
+                    nowMode = MODE_NORMAL;
+                    setSavedLevelText();
+                }
+            }
+        });
+
+        setSavedLevelText();
     }
 
     /**
@@ -215,7 +231,10 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
                 showTimePickerDialogAndSetEndTime();
                 break;
             case R.id.event_remind_pri_drop:
-                EventRemindTimePriDialogActivity.actionStart(NewEventActivity.this);
+                Intent intent = new Intent(NewEventActivity.this, EventRemindTimePriDialogActivity.class);
+                //将事件模式传递给Dialog
+                intent.putExtra("event_mode", nowMode);
+                startActivityForResult(intent, 1);
                 break;
             case R.id.cancel_save:
                 finish();
@@ -223,6 +242,97 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
             default:
                 break;
         }
+    }
+
+    /**
+     * 获取Dialog返回的数据
+     *
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        switch (requestCode){
+            case 1:
+                if (resultCode == RESULT_OK){
+                    priOrRemindLevel = data.getIntExtra("event_level", 1);
+//                    Toast.makeText(NewEventActivity.this, "选择的数据："+priOrRemindLevel, Toast.LENGTH_SHORT).show();
+                    setLevelText();
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * 设置保存的提醒时间或优先级文字
+     */
+    private void setSavedLevelText(){
+        SharedPreferences pref = getSharedPreferences("level_tmp", MODE_PRIVATE);
+        int tmpNormalLevel = pref.getInt("normal_mode_level", 1);
+        int tmpTomatoLevel = pref.getInt("tomato_mode_level", 1);
+
+        if (nowMode == MODE_NORMAL){
+            switch (tmpNormalLevel){
+                case 1:
+                    eventRemindTimePriText.setText(NORMAL_TEXT_1);
+                    break;
+                case 2:
+                    eventRemindTimePriText.setText(NORMAL_TEXT_2);
+                    break;
+                case 3:
+                    eventRemindTimePriText.setText(NORMAL_TEXT_3);
+                    break;
+                case 4:
+                    eventRemindTimePriText.setText(NORMAL_TEXT_4);
+                    break;
+                case 5:
+                    eventRemindTimePriText.setText(NORMAL_TEXT_5);
+                    break;
+                case 6:
+                    eventRemindTimePriText.setText(NORMAL_TEXT_6);
+                    break;
+                default:
+            }
+        }else{
+            eventRemindTimePriText.setText("优先级 "+tmpTomatoLevel);
+        }
+    }
+
+    /**
+     * 设置提醒时间或优先级文字
+     */
+    private void setLevelText(){
+
+        if (nowMode == MODE_NORMAL){
+            switch (priOrRemindLevel){
+                case 1:
+                    eventRemindTimePriText.setText(NORMAL_TEXT_1);
+                    break;
+                case 2:
+                    eventRemindTimePriText.setText(NORMAL_TEXT_2);
+                    break;
+                case 3:
+                    eventRemindTimePriText.setText(NORMAL_TEXT_3);
+                    break;
+                case 4:
+                    eventRemindTimePriText.setText(NORMAL_TEXT_4);
+                    break;
+                case 5:
+                    eventRemindTimePriText.setText(NORMAL_TEXT_5);
+                    break;
+                case 6:
+                    eventRemindTimePriText.setText(NORMAL_TEXT_6);
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            eventRemindTimePriText.setText("优先级 "+priOrRemindLevel);
+        }
+
     }
 
     private void showDatePickerDialogAndSetStartDay(){

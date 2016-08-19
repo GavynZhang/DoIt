@@ -23,7 +23,7 @@
     <RelativeLayout
         android:id="@+id/dialog_level_1_relative_btn"
         android:layout_below="@+id/dialog_title"
-        android:layout_marginTop="@dimen/dialog_maegin_top"
+        android:layout_marginTop="16dp"
         android:layout_width="match_parent"
         android:layout_height="40dp">
 
