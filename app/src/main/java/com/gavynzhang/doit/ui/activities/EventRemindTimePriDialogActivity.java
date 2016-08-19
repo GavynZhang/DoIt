@@ -16,6 +16,10 @@ import com.gavynzhang.doit.R;
 import com.gavynzhang.doit.app.BaseActivity;
 import com.gavynzhang.doit.utils.LogUtils;
 
+
+/**
+ * Created by GavynZhang on 2016/8/18.
+ */
 public class EventRemindTimePriDialogActivity extends BaseActivity implements View.OnClickListener{
 
     private static final int MODE_NORMAL = 0;

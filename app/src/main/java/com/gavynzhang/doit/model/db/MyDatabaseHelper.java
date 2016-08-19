@@ -12,6 +12,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     /**
      * username :所属用户
      * name :事件名称
+     * mode :事件类型
      * startTime: 事件开始时间
      * endTime: 事件结束时间
      * remindTime: 事件提醒时间
@@ -25,6 +26,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             "id integer primary key autoincrement," +
             "username text, " +
             "name, text" +
+            "mode, integer,"+
             "startTime text," +
             "endTime text," +
             "remindTime text" +
@@ -33,29 +35,12 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             "tag text," +
             "isFinish integer)";
 
-//    /**
-//     * username: 所属用户
-//     * eventName: 事件名称
-//     * deadline: 事件截止日期
-//     * eventId: 事件对应Id
-//     * isFinish: 事件是否完成
-//     * eventRemarks: 事件备注
-//     * eventTag: 事件标签
-//     * */
-//    public static final String CREATE_DEADLINE_EVENT = "create table deadlineEvent(" +
-//            "id integer primary key autoincrement," +
-//            "username text," +
-//            "eventName text," +
-//            "deadline text," +
-//            "eventId integer," +
-//            "isFinish integer," +
-//            "eventRemarks text," +
-//            "eventTag text)";
 
     /**
      * eventId: 番茄所对应的事件
      * startTime: 番茄开始时间
      * isBroken: 番茄是否完成
+     * brokenReason: 打断原因
      * */
     public static final String CREATE_TOMATO = "create table tomato(" +
             "id integer primary key autoincrement," +

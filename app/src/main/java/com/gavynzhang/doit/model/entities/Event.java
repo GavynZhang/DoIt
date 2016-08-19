@@ -11,6 +11,7 @@ public class Event extends BmobObject{
 
     private MyUser user;
     private String name;
+    private Number mode;
     private BmobDate startTime;
     private BmobDate endTime;
     private BmobDate remindTime;
@@ -19,6 +20,14 @@ public class Event extends BmobObject{
     private String tag;
     private Boolean isFinish;
     private Number tomatoNum;
+
+    public Number getMode() {
+        return mode;
+    }
+
+    public void setMode(Number mode) {
+        this.mode = mode;
+    }
 
     public String getAddress() {
         return address;
