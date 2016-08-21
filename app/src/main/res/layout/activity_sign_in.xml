@@ -30,8 +30,8 @@
             android:layout_centerHorizontal="true"/>
 
         <EditText
-            android:id="@+id/sign_in_user_email"
-            android:hint="@string/user_email"
+            android:id="@+id/sign_in_user_name"
+            android:hint="@string/user_name"
             android:singleLine="true"
             android:inputType="textEmailAddress"
             android:layout_below="@+id/sign_in_icon"
@@ -51,7 +51,7 @@
             android:textColor="@color/md_grey_800"
             android:textColorLink="@color/md_teal_400"
             android:layout_marginTop="8dp"
-            android:layout_below="@+id/sign_in_user_email"
+            android:layout_below="@+id/sign_in_user_name"
             android:layout_width="match_parent"
             android:layout_height="40dp"/>
         <Button

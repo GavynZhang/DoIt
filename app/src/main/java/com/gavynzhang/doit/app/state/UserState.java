@@ -14,7 +14,8 @@ public interface UserState {
      * 用户状态
      * */
 
-    public void saveEventData(Event event);
+    void saveEventData(Event event);
+    Event getEventData();
 
 
 }

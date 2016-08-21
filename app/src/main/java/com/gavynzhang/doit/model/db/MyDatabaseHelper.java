@@ -22,14 +22,14 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
      * isFinish: 是否完成
      * tomatoNum: 事件所用番茄钟
      * */
-    public static final String CREATE_EVENT = "create table event(" +
+    public static final String CREATE_EVENT = "create table Event(" +
             "id integer primary key autoincrement," +
             "username text, " +
-            "name, text" +
+            "name, text," +
             "mode, integer,"+
             "startTime text," +
             "endTime text," +
-            "remindTime text" +
+            "remindTime text," +
             "address text," +
             "remarks text," +
             "tag text," +
@@ -42,7 +42,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
      * isBroken: 番茄是否完成
      * brokenReason: 打断原因
      * */
-    public static final String CREATE_TOMATO = "create table tomato(" +
+    public static final String CREATE_TOMATO = "create table Tomato(" +
             "id integer primary key autoincrement," +
             "eventId text," +
             "startTime text," +

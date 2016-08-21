@@ -18,10 +18,15 @@ import android.widget.Toast;
 
 import com.gavynzhang.doit.R;
 import com.gavynzhang.doit.app.BaseActivity;
+import com.gavynzhang.doit.app.state.LoginContext;
+import com.gavynzhang.doit.app.state.SignInState;
+import com.gavynzhang.doit.model.entities.MyUser;
 import com.gavynzhang.doit.utils.LogUtils;
 import com.gavynzhang.doit.utils.RegularUtils;
 
 import cn.bmob.v3.Bmob;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 public class SignInActivity extends BaseActivity implements View.OnClickListener{
 
@@ -29,11 +34,11 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private Button createAccountBtn;
     private Button signIn;
 
-    private EditText userEmail;
+    private EditText username;
     private EditText userPassword;
 
-    private String email;
-    private String password;
+    private String usernameString;
+    private String passwordString;
 
     private Toolbar mToolbar;
 
@@ -50,12 +55,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         setContentView(R.layout.activity_sign_in);
         Bmob.initialize(this, "9f9400b18ebbb85039231d8bd0cf24d2");
 
-        resetPasswordBtn = $(R.id.reset_password_btn);
-        createAccountBtn = $(R.id.create_account_btn);
-        userEmail = $(R.id.sign_in_user_email);
-        userPassword = $(R.id.sign_in_password);
-        signIn = $(R.id.sign_in_btn);
-        mToolbar = $(R.id.toolbar);
+        initViews();
 
         mToolbar.setNavigationIcon(R.drawable.back);
         mToolbar.setTitle("登录");
@@ -67,9 +67,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             }
         });
 
-        resetPasswordBtn.setOnClickListener(this);
-        createAccountBtn.setOnClickListener(this);
-        signIn.setOnClickListener(this);
+        setOnClickListener();
 
     }
 
@@ -83,12 +81,12 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 SignUpActivity.actionStart(SignInActivity.this);
                 break;
             case R.id.sign_in_btn:
-                email = userEmail.getText().toString().trim();
-                password = userPassword.getText().toString().trim();
-                if (!RegularUtils.isEmail(email)){
-                    Toast.makeText(SignInActivity.this,"邮箱有误，请重新输入！", Toast.LENGTH_SHORT).show();
-                    userEmail.selectAll();
-                }
+                usernameString = username.getText().toString().trim();
+                passwordString = userPassword.getText().toString().trim();
+//                if (!RegularUtils.isEmail(usernameString)){
+//                    Toast.makeText(SignInActivity.this,"邮箱有误，请重新输入！", Toast.LENGTH_SHORT).show();
+//                    userEmail.selectAll();
+//                }
             default:
                 break;
         }
@@ -98,8 +96,37 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
      * 进行登录操作
      * */
     private void login(){
+        MyUser user = new MyUser();
+        user.setUsername(usernameString);
+        user.setPassword(passwordString);
+
+        user.login(new SaveListener<MyUser>() {
+
+            @Override
+            public void done(MyUser myUser, BmobException e) {
+                if (e == null){
+                    LoginContext.getLoginContext().setState(new SignInState());
+                }else{
+
+                }
+            }
+        });
 
     }
 
+    private void initViews(){
+        resetPasswordBtn = $(R.id.reset_password_btn);
+        createAccountBtn = $(R.id.create_account_btn);
+        username = $(R.id.sign_in_user_name);
+        userPassword = $(R.id.sign_in_password);
+        signIn = $(R.id.sign_in_btn);
+        mToolbar = $(R.id.toolbar);
+    }
+
+    private void setOnClickListener(){
+        resetPasswordBtn.setOnClickListener(this);
+        createAccountBtn.setOnClickListener(this);
+        signIn.setOnClickListener(this);
+    }
 
 }

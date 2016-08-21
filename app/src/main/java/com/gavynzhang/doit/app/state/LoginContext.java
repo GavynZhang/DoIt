@@ -25,4 +25,12 @@ public class LoginContext{
         mState = state;
     }
 
+    public void saveDate(Event event){
+        mState.saveEventData(event);
+    }
+
+    public Event getDate(){
+        return mState.getEventData();
+    }
+
 }

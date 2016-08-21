@@ -124,7 +124,7 @@
 
             <TextView
                 android:id="@+id/new_event_start_day"
-                android:text="2016/8/18周四"
+                android:text="2016-8-18周四"
                 android:textColor="@color/md_grey_800"
                 android:textSize="17sp"
                 android:layout_centerVertical="true"
@@ -190,7 +190,7 @@
 
             <TextView
                 android:id="@+id/new_event_end_day"
-                android:text="2016/8/18周四"
+                android:text="2016-8-18周四"
                 android:textColor="@color/md_grey_800"
                 android:textSize="17sp"
                 android:layout_centerVertical="true"
@@ -449,11 +449,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>
         <Button
+            android:clickable="false"
             android:id="@+id/save_event"
             android:text="保存"
-            android:clickable="false"
             android:background="@color/cardview_bac"
-            android:textColor="@color/md_grey_800"
+            android:textColor="@color/md_grey_400"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"/>

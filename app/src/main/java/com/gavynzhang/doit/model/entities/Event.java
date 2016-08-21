@@ -14,12 +14,21 @@ public class Event extends BmobObject{
     private Number mode;
     private BmobDate startTime;
     private BmobDate endTime;
+    private Number pri;
     private BmobDate remindTime;
     private String address;
     private String remarks;
     private String tag;
     private Boolean isFinish;
     private Number tomatoNum;
+
+    public Number getPri() {
+        return pri;
+    }
+
+    public void setPri(Number pri) {
+        this.pri = pri;
+    }
 
     public Number getMode() {
         return mode;

@@ -485,7 +485,7 @@ public class TimeUtils {
     /**
      * 判断当前日期是星期几
      *
-     * @param  pTime     设置的需要判断的时间 ,格式如2012/09/08
+     * @param  pTime     设置的需要判断的时间 ,格式如2012-09-08
      *
 
      * @return dayForWeek 判断结果
@@ -497,7 +497,7 @@ public class TimeUtils {
         String Week = "";
 
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         Calendar c = Calendar.getInstance();
         try {
 
@@ -508,7 +508,7 @@ public class TimeUtils {
             e.printStackTrace();
         }
         if (c.get(Calendar.DAY_OF_WEEK) == 1) {
-            Week += "天";
+            Week += "日";
         }
         if (c.get(Calendar.DAY_OF_WEEK) == 2) {
             Week += "一";
