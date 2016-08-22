@@ -67,15 +67,15 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
 
 
     }
-    /**
-     *  用于启动本Activity
-     *
-     * @param context :上一个容器：Activity
-     * */
-    public static void actionStart(Context context){
-        Intent intent = new Intent(context, SignUpActivity.class);
-        context.startActivity(intent);
-    }
+//    /**
+//     *  用于启动本Activity
+//     *
+//     * @param context :上一个容器：Activity
+//     * */
+//    public static void actionStart(Context context){
+//        Intent intent = new Intent(context, SignUpActivity.class);
+//
+//    }
 
     @Override
     public void onClick(View view) {
@@ -107,7 +107,7 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
      * 注册逻辑
      */
     private void signUp(){
-        MyUser user = new MyUser();
+        final MyUser user = new MyUser();
         user.setUsername(username);
         user.setEmail(email);
         user.setPassword(password);
@@ -117,6 +117,10 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                 if (e == null){
                     Toast.makeText(SignUpActivity.this, R.string.sign_up_success, Toast.LENGTH_SHORT).show();
                     LoginContext.getLoginContext().setState(new LogoutState());
+                    Intent intent = new Intent();
+                    intent.putExtra("username",username);
+                    intent.putExtra("password",password);
+                    setResult(RESULT_OK, intent);
                     finish();
                 }
             }

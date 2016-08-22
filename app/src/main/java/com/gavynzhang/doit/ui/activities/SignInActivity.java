@@ -78,11 +78,13 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             case R.id.reset_password_btn:
                 break;
             case R.id.create_account_btn:
-                SignUpActivity.actionStart(SignInActivity.this);
+                Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
+                startActivityForResult(intent, 1);
                 break;
             case R.id.sign_in_btn:
                 usernameString = username.getText().toString().trim();
                 passwordString = userPassword.getText().toString().trim();
+                login();
 //                if (!RegularUtils.isEmail(usernameString)){
 //                    Toast.makeText(SignInActivity.this,"邮箱有误，请重新输入！", Toast.LENGTH_SHORT).show();
 //                    userEmail.selectAll();
@@ -112,6 +114,24 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case 1:
+                if (resultCode == RESULT_OK){
+                    usernameString = data.getStringExtra("username");
+                    passwordString = data.getStringExtra("password");
+
+                    username.setText(usernameString);
+                    LogUtils.w("SignInActivity","username: "+usernameString);
+                    userPassword.setText(passwordString);
+                }
+                break;
+            default:
+                break;
+        }
     }
 
     private void initViews(){
