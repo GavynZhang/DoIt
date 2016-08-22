@@ -25,11 +25,12 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     public static final String CREATE_EVENT = "create table Event(" +
             "id integer primary key autoincrement," +
             "username text, " +
-            "name, text," +
-            "mode, integer,"+
+            "name text," +
+            "mode integer,"+
             "startTime text," +
             "endTime text," +
             "remindTime text," +
+            "pri integer,"+
             "address text," +
             "remarks text," +
             "tag text," +
@@ -70,7 +71,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
+        db.execSQL("drop table if exists Event");
+        db.execSQL("drop table if exists Tomato");
+        onCreate(db);
     }
 }

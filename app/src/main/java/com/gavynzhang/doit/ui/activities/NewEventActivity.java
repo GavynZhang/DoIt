@@ -146,6 +146,8 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
+        saveEvent.setClickable(false);
+
         editEventName.addTextChangedListener(new TextWatcher() {
             private CharSequence tmp;
 
@@ -351,20 +353,24 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
         //事件名称
         mEvent.setName(eventNameString);
         //事件发生地点
-        if (eventPlaceString.equals("")) {
-            mEvent.setAddress("unknown");
+        LogUtils.w("NewEventActivity", "eventPlaceString"+eventPlaceString);
+        if (eventPlaceString == null) {
+            mEvent.setAddress("unKnown");
+        }else {
+            mEvent.setAddress(eventPlaceString);
         }
-        mEvent.setAddress(eventPlaceString);
         //事件备注
         if (eventRemarksString == null) {
-            mEvent.setRemarks("unknown");
+            mEvent.setRemarks("unKnown");
+        }else {
+            mEvent.setRemarks(eventRemarksString);
         }
-        mEvent.setRemarks(eventRemarksString);
         //事件标签
         if (eventTagString == null){
             mEvent.setTag("unknown");
+        }else {
+            mEvent.setTag(eventTagString);
         }
-        mEvent.setTag(eventTagString);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         Date tmpStartDate = null;
@@ -390,58 +396,78 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
             mEvent.setEndTime(endDate);
         }
 
-        long tmpStartMilliseconds = TimeUtils.date2Milliseconds(tmpStartDate);
 
         if (nowMode == MODE_NORMAL) {
             mEvent.setPri(-1);
             LogUtils.d("NewEventActivity","priOrRemindLevel: "+priOrRemindLevel);
-            switch (priOrRemindLevel) {
-                case 1:
-                    //not to remind
-                    mEvent.setRemindTime(null);
-                    break;
-                case 2:
-                    //When event happen, remind user
-                    mEvent.setRemindTime(startDate);
-                    break;
-                case 3:
-                    //事件发生前10分钟提醒
-                    long tmpRemindMillisecondsLevel3 = tmpStartMilliseconds - REMIND_LEVEL3_SEC * 1000;
-                    Date tmpRemindDateLevel3 = TimeUtils.milliseconds2Date(tmpRemindMillisecondsLevel3);
-                    mEvent.setRemindTime(new BmobDate(tmpRemindDateLevel3));
-                    break;
-                case 4:
-                    //事件发生前30分钟提醒
-                    long tmpRemindMillisecondsLevel4 = tmpStartMilliseconds - REMIND_LEVEL4_SEC * 1000;
-                    Date tmpRemindDateLevel4 = TimeUtils.milliseconds2Date(tmpRemindMillisecondsLevel4);
-                    mEvent.setRemindTime(new BmobDate(tmpRemindDateLevel4));
+            long tmpStartMilliseconds;
 
-                    break;
-                case 5:
-                    //事件发生前1小时提醒
-                    long tmpRemindMillisecondsLevel5 = tmpStartMilliseconds - REMIND_LEVEL5_SEC * 1000;
-                    Date tmpRemindDateLevel5 = TimeUtils.milliseconds2Date(tmpRemindMillisecondsLevel5);
-                    mEvent.setRemindTime(new BmobDate(tmpRemindDateLevel5));
-
-                    break;
-                case 6:
-                    //事件发生前一天提醒
-                    long tmpRemindMillisecondsLevel6 = tmpStartMilliseconds - REMIND_LEVEL6_SEC * 1000;
-                    Date tmpRemindDateLevel6 = TimeUtils.milliseconds2Date(tmpRemindMillisecondsLevel6);
-                    mEvent.setRemindTime(new BmobDate(tmpRemindDateLevel6));
-
-                    break;
-                default:
-                    break;
+            //初始化tmpStartMilliseconds
+            if (startDay != null && startTime != null) {
+                tmpStartMilliseconds = TimeUtils.date2Milliseconds(tmpStartDate);
+            }else{
+                tmpStartMilliseconds = TimeUtils.string2Milliseconds(mEvent.getStartTime().getDate());
             }
+
+
+
+                switch (priOrRemindLevel) {
+                    case 1:
+                        //not to remind
+                        mEvent.setRemindTime(null);
+                        break;
+                    case 2:
+                        //When event happen, remind user
+                        mEvent.setRemindTime(startDate);
+                        break;
+                    case 3:
+                        //事件发生前10分钟提醒
+                        long tmpRemindMillisecondsLevel3 = tmpStartMilliseconds - REMIND_LEVEL3_SEC * 1000;
+                        Date tmpRemindDateLevel3 = TimeUtils.milliseconds2Date(tmpRemindMillisecondsLevel3);
+                        mEvent.setRemindTime(new BmobDate(tmpRemindDateLevel3));
+                        break;
+                    case 4:
+                        //事件发生前30分钟提醒
+                        long tmpRemindMillisecondsLevel4 = tmpStartMilliseconds - REMIND_LEVEL4_SEC * 1000;
+                        Date tmpRemindDateLevel4 = TimeUtils.milliseconds2Date(tmpRemindMillisecondsLevel4);
+                        mEvent.setRemindTime(new BmobDate(tmpRemindDateLevel4));
+
+                        break;
+                    case 5:
+                        //事件发生前1小时提醒
+                        long tmpRemindMillisecondsLevel5 = tmpStartMilliseconds - REMIND_LEVEL5_SEC * 1000;
+                        Date tmpRemindDateLevel5 = TimeUtils.milliseconds2Date(tmpRemindMillisecondsLevel5);
+                        mEvent.setRemindTime(new BmobDate(tmpRemindDateLevel5));
+
+                        break;
+                    case 6:
+                        //事件发生前一天提醒
+                        long tmpRemindMillisecondsLevel6 = tmpStartMilliseconds - REMIND_LEVEL6_SEC * 1000;
+                        Date tmpRemindDateLevel6 = TimeUtils.milliseconds2Date(tmpRemindMillisecondsLevel6);
+                        mEvent.setRemindTime(new BmobDate(tmpRemindDateLevel6));
+
+                        break;
+                    default:
+                        break;
+                }
+
+
         } else {
-            //番茄事件设置提醒时间（不提醒，防NullPointer）
-            mEvent.setRemindTime(endDate);
-            //优先级
-            mEvent.setPri(priOrRemindLevel);
+            if (endDay != null && endTime != null) {
+                //番茄事件设置提醒时间（不提醒，防NullPointer）
+                mEvent.setRemindTime(endDate);
+            }
+            if (priOrRemindLevel != 0) {
+                //优先级
+                mEvent.setPri(priOrRemindLevel);
+            }
         }
 
 
+    }
+
+    private void setDefaultEndDayWhenSetStartDay(){
+        endDay = startDay;
     }
 
     /**
@@ -519,6 +545,7 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
             }
         } else {
             eventRemindTimePriText.setText("优先级 " + tmpTomatoLevel);
+            mEvent.setPri(tmpTomatoLevel);
         }
     }
 
@@ -562,9 +589,21 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
         new DatePickerDialog(NewEventActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                String monthString;
+                String dayOfMonthString;
                 month = month + 1;
+                if (month < 10){
+                    monthString = "0"+month;
+                }else {
+                    monthString = String.valueOf(month);
+                }
+                if (dayOfMonth < 10){
+                    dayOfMonthString = "0"+dayOfMonth;
+                }else{
+                    dayOfMonthString = String.valueOf(dayOfMonth);
+                }
                 startDay = year + "-" + month + "-" + dayOfMonth;
-                eventStartDay.setText(startDay + "周" + TimeUtils.getWeek(startDay));
+                eventStartDay.setText(year+ "-" + monthString + "-" + dayOfMonthString + "周" + TimeUtils.getWeek(startDay));
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
     }
@@ -575,12 +614,25 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
         new DatePickerDialog(NewEventActivity.this, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
+                String monthString;
+                String dayOfMonthString;
                 month += 1;
+                if (month < 10){
+                    monthString = "0"+month;
+                }else{
+                    monthString = String.valueOf(month);
+                }
+                if (dayOfMonth < 10){
+                    dayOfMonthString = "0"+dayOfMonth;
+                }else{
+                    dayOfMonthString = String.valueOf(dayOfMonth);
+                }
                 endDay = year + "-" + month + "-" + dayOfMonth;
-                eventEndDay.setText(endDay + "周" + TimeUtils.getWeek(endDay));
+                eventEndDay.setText(year+"-" + monthString + "-" + dayOfMonthString + "周" + TimeUtils.getWeek(endDay));
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
     }
+
 
     private void showTimePickerDialogAndSetStartTime() {
         Calendar c = Calendar.getInstance();
