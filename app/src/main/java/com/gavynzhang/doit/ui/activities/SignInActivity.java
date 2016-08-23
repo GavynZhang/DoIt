@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.gavynzhang.doit.R;
 import com.gavynzhang.doit.app.BaseActivity;
 import com.gavynzhang.doit.app.state.LoginContext;
+import com.gavynzhang.doit.app.state.MyApplication;
 import com.gavynzhang.doit.app.state.SignInState;
 import com.gavynzhang.doit.model.entities.MyUser;
 import com.gavynzhang.doit.utils.LogUtils;
@@ -82,8 +83,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 startActivityForResult(intent, 1);
                 break;
             case R.id.sign_in_btn:
-                usernameString = username.getText().toString().trim();
-                passwordString = userPassword.getText().toString().trim();
+                usernameString = username.getText().toString();
+                passwordString = userPassword.getText().toString();
                 login();
 //                if (!RegularUtils.isEmail(usernameString)){
 //                    Toast.makeText(SignInActivity.this,"邮箱有误，请重新输入！", Toast.LENGTH_SHORT).show();
@@ -107,9 +108,11 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             @Override
             public void done(MyUser myUser, BmobException e) {
                 if (e == null){
+                    Toast.makeText(MyApplication.getContext(), "登录成功", Toast.LENGTH_SHORT).show();
                     LoginContext.getLoginContext().setState(new SignInState());
+                    finish();
                 }else{
-
+                    LogUtils.w("SignInActivity", "登录错误"+e.toString());
                 }
             }
         });

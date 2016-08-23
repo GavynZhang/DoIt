@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +17,9 @@ import android.view.MenuItem;
 
 import com.gavynzhang.doit.R;
 import com.gavynzhang.doit.app.BaseActivity;
+import com.gavynzhang.doit.app.state.LoginContext;
+import com.gavynzhang.doit.app.state.SignInState;
+import com.gavynzhang.doit.model.entities.MyUser;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
 import cn.bmob.v3.Bmob;
@@ -24,6 +28,7 @@ public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private MaterialCalendarView mCalendarView;
+    private RecyclerView eventListRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,7 @@ public class MainActivity extends BaseActivity
         Bmob.initialize(this, "9f9400b18ebbb85039231d8bd0cf24d2");
 
         mCalendarView = $(R.id.calendar_view);
+        eventListRecyclerView = $(R.id.event_list);
 
 
         final Toolbar toolbar = $(R.id.toolbar);
@@ -56,6 +62,16 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private boolean isLogin(){
+        MyUser user = MyUser.getCurrentUser(MyUser.class);
+        if (user != null){
+            LoginContext.getLoginContext().setState(new SignInState());
+            return true;
+        }else{
+            return false;
+        }
     }
 
     @Override

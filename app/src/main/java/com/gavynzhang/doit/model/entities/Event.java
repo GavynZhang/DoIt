@@ -9,6 +9,7 @@ import cn.bmob.v3.datatype.BmobDate;
  */
 public class Event extends BmobObject{
 
+    private String userName;
     private MyUser user;
     private String name;
     private Number mode;
@@ -21,6 +22,14 @@ public class Event extends BmobObject{
     private String tag;
     private Boolean isFinish;
     private Number tomatoNum;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public Number getPri() {
         return pri;

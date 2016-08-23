@@ -26,9 +26,6 @@ public class LogoutState implements UserState {
             values.put("username", "local");
             values.put("name", event.getName());
             values.put("startTime", event.getStartTime().getDate());
-
-            LogUtils.d("LogoutState", "startTime "+event.getStartTime().getDate());
-
             values.put("endTime", event.getEndTime().getDate());
             values.put("pri", event.getPri().intValue());
             values.put("mode", event.getMode().intValue());

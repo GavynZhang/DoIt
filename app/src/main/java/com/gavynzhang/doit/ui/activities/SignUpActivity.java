@@ -18,7 +18,9 @@ import com.gavynzhang.doit.R;
 import com.gavynzhang.doit.app.BaseActivity;
 import com.gavynzhang.doit.app.state.LoginContext;
 import com.gavynzhang.doit.app.state.LogoutState;
+import com.gavynzhang.doit.app.state.MyApplication;
 import com.gavynzhang.doit.model.entities.MyUser;
+import com.gavynzhang.doit.utils.LogUtils;
 import com.gavynzhang.doit.utils.RegularUtils;
 
 import cn.bmob.v3.Bmob;
@@ -122,6 +124,9 @@ public class SignUpActivity extends BaseActivity implements View.OnClickListener
                     intent.putExtra("password",password);
                     setResult(RESULT_OK, intent);
                     finish();
+                }else {
+                    Toast.makeText(MyApplication.getContext(), e.toString(),Toast.LENGTH_SHORT).show();
+                    LogUtils.w("SignUpActivity", "错误： "+e.toString());
                 }
             }
         });

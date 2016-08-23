@@ -23,5 +23,33 @@
         app:mcv_tileHeight="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+    <ImageView
+        android:layout_below="@+id/calendar_view"
+        android:background="@color/md_grey_300"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
+
+
+
+    <RelativeLayout
+        android:layout_below="@+id/calendar_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <include layout="@layout/event_item"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/event_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+        </android.support.v7.widget.RecyclerView>
+
+    </RelativeLayout>
+
+
+
+
 
 </RelativeLayout>
