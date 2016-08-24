@@ -27,13 +27,15 @@ public class LogoutState implements UserState {
             values.put("name", event.getName());
             values.put("startTime", event.getStartTime().getDate());
             values.put("endTime", event.getEndTime().getDate());
+            values.put("startTimeMillSeconds", event.getStartTimeMillSeconds().longValue());
+            values.put("endTimeMillSeconds", event.getEndTimeMillSeconds().longValue());
             values.put("pri", event.getPri().intValue());
             values.put("mode", event.getMode().intValue());
             values.put("remindTime", event.getRemindTime().getDate());
             values.put("address", event.getAddress());
             values.put("remarks", event.getRemarks());
             values.put("tag", event.getTag());
-            values.put("isFinish", event.getFinish().intValue());
+            values.put("isFinish", event.getIsFinish().intValue());
             db.insert("Event", null, values);
 
             Toast.makeText(MyApplication.getContext(),"startTime: "+event.getStartTime().getDate(), Toast.LENGTH_SHORT).show();

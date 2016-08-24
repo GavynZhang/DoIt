@@ -32,7 +32,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
             "name text," +
             "mode integer,"+
             "startTime text," +
+            "startTimeMillSeconds integer,"+
             "endTime text," +
+            "endTimeMillSeconds integer,"+
             "remindTime text," +
             "pri integer,"+
             "address text," +

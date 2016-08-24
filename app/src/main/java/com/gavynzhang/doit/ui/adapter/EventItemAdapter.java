@@ -20,6 +20,10 @@ public class EventItemAdapter extends RecyclerView.Adapter {
 
     private List<Event> mEvents;
 
+    public EventItemAdapter(List<Event> events){
+        this.mEvents = events;
+    }
+
     @Override
     public EventItemAdapter.EventViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.event_item, null);
@@ -43,7 +47,7 @@ public class EventItemAdapter extends RecyclerView.Adapter {
             vh.getItemEventName().setText(eventData.getName());
             vh.getItemEventTime().setText(eventData.getStartTime().getDate() + "-" + eventData.getEndTime().getDate());
             boolean isFinish;
-            if (eventData.getFinish().intValue() == 0){
+            if (eventData.getIsFinish().intValue() == 0){
                 isFinish = false;
             }else {
                 isFinish = true;

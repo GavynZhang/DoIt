@@ -24,8 +24,7 @@ public class DayDisplayDecorator implements DayViewDecorator {
 
     @Override
     public boolean shouldDecorate(CalendarDay day) {
-//        if (TimeUtils.string2Milliseconds(day.getDate().toString()) > )
-        String dayString = day.getYear()+"-"+day.getMonth()+"-"+day.getDay()+" "+"00:00:00";
+        String dayString = day.getYear()+"-"+String.valueOf(day.getMonth()+1)+"-"+day.getDay()+" "+"00:00:00";
         long nowDayBeginMill = TimeUtils.string2Milliseconds(dayString);
         long nowDayEndMill = nowDayBeginMill + 86400 * 1000;
 
@@ -33,17 +32,19 @@ public class DayDisplayDecorator implements DayViewDecorator {
         //LogUtils.d("DayDisplayDector", "CalendarDay day : "+day.getDate().toString()+" getDay: "+day.getDay()+" getMonth: "+day.getMonth()+" getYear: "+day.getYear());
 
         boolean isDecorator = false;
+        long eventStartTimeMill = 0;
+        long eventEndTimeMill = 0;
 
         for (int i = 0; i < mEvents.size(); i++){
             Event event = mEvents.get(i);
 
-            long eventStartTimeMill = TimeUtils.string2Milliseconds(event.getStartTime().getDate());
-            long eventEndTimeMill = TimeUtils.string2Milliseconds(event.getEndTime().getDate());
+            eventStartTimeMill = event.getStartTimeMillSeconds().longValue();
+            eventEndTimeMill = event.getEndTimeMillSeconds().longValue();
 
             if (nowDayBeginMill < eventStartTimeMill && eventStartTimeMill < nowDayEndMill){
                 isDecorator = true;
                 break;
-            }else if (nowDayBeginMill < eventEndTimeMill && nowDayBeginMill > eventStartTimeMill){
+            }else if (nowDayBeginMill < eventEndTimeMill && eventEndTimeMill < nowDayEndMill){
                 isDecorator = true;
                 break;
             }
@@ -57,7 +58,7 @@ public class DayDisplayDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(DayViewFacade view) {
-        view.setBackgroundDrawable(MyApplication.getContext().getResources().getDrawable(R.drawable.circle));
+        view.setBackgroundDrawable(MyApplication.getContext().getResources().getDrawable(R.drawable.circle_paint));
     }
 
 }

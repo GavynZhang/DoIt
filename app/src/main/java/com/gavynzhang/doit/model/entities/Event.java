@@ -14,7 +14,9 @@ public class Event extends BmobObject{
     private String name;
     private Number mode;
     private BmobDate startTime;
+    private Number startTimeMillSeconds;
     private BmobDate endTime;
+    private Number endTimeMillSeconds;
     private Number pri;
     private BmobDate remindTime;
     private String address;
@@ -22,6 +24,30 @@ public class Event extends BmobObject{
     private String tag;
     private Number isFinish;
     private Number tomatoNum;
+
+    public Number getEndTimeMillSeconds() {
+        return endTimeMillSeconds;
+    }
+
+    public void setEndTimeMillSeconds(Number endTimeMillSeconds) {
+        this.endTimeMillSeconds = endTimeMillSeconds;
+    }
+
+    public Number getIsFinish() {
+        return isFinish;
+    }
+
+    public void setIsFinish(Number isFinish) {
+        this.isFinish = isFinish;
+    }
+
+    public Number getStartTimeMillSeconds() {
+        return startTimeMillSeconds;
+    }
+
+    public void setStartTimeMillSeconds(Number startTimeMillSeconds) {
+        this.startTimeMillSeconds = startTimeMillSeconds;
+    }
 
     public String getUserName() {
         return userName;
@@ -61,14 +87,6 @@ public class Event extends BmobObject{
 
     public void setEndTime(BmobDate endTime) {
         this.endTime = endTime;
-    }
-
-    public Number getFinish() {
-        return isFinish;
-    }
-
-    public void setFinish(Number finish) {
-        isFinish = finish;
     }
 
     public String getName() {

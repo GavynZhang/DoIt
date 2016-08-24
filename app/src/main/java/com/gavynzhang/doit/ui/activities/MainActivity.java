@@ -1,10 +1,13 @@
 package com.gavynzhang.doit.ui.activities;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -14,6 +17,8 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.DatePicker;
+import android.widget.Toast;
 
 
 import com.gavynzhang.doit.R;
@@ -23,10 +28,14 @@ import com.gavynzhang.doit.app.state.SignInState;
 import com.gavynzhang.doit.model.db.MyDatabaseHelper;
 import com.gavynzhang.doit.model.entities.Event;
 import com.gavynzhang.doit.model.entities.MyUser;
+import com.gavynzhang.doit.ui.adapter.EventItemAdapter;
 import com.gavynzhang.doit.ui.decorator.DayDisplayDecorator;
 import com.gavynzhang.doit.utils.LogUtils;
 import com.gavynzhang.doit.utils.TimeUtils;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,7 +45,10 @@ import cn.bmob.v3.Bmob;
 import cn.bmob.v3.datatype.BmobDate;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        OnDateSelectedListener,OnMonthChangedListener {
+
+    private static final int ONE_DAY_SEC = 86400;
 
     private MaterialCalendarView mCalendarView;
     private RecyclerView eventListRecyclerView;
@@ -52,17 +64,8 @@ public class MainActivity extends BaseActivity
         mCalendarView = $(R.id.calendar_view);
         eventListRecyclerView = $(R.id.event_list);
 
-//        LogUtils.d("MainActivity", "nowDate: "+TimeUtils.getCurTimeString());
-//        long nowDayLong = TimeUtils.string2Milliseconds(TimeUtils.getCurTimeString());
-//        LogUtils.d("MainActivity", "date: "+nowDayLong);
-//        String nowDay = TimeUtils.getCurTimeString().substring(0,10)+" 00:00:00";
-//
-//        long nowDayBegin = TimeUtils.string2Milliseconds(nowDay);
-//        LogUtils.d("MainActivity", "nowdaybegin:"+nowDayBegin);
-
-//        mCalendarView.setBackgroundDrawable(MyApplication.getContext().getResources().getDrawable(R.drawable.check));
-
         mCalendarView.addDecorator(new DayDisplayDecorator(queryEvents()));
+        mCalendarView.setOnDateChangedListener(this);
 
         final Toolbar toolbar = $(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -72,8 +75,9 @@ public class MainActivity extends BaseActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //弹出选择框dialog
-                NewEventActivity.actionStart(MainActivity.this);
+                Intent intent = new Intent(MainActivity.this, NewEventActivity.class);
+                startActivityForResult(intent, 1);
+//                NewEventActivity.actionStart(MainActivity.this);
             }
         });
 
@@ -154,6 +158,22 @@ public class MainActivity extends BaseActivity
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case 1:
+                if (resultCode == RESULT_OK){
+                    LogUtils.i("MainActivity", data.getStringExtra("isSave"));
+                    mCalendarView.addDecorator(new DayDisplayDecorator(queryEvents()));
+                }
+        }
+    }
+
+    private void initData(List<Event> events){
+        eventListRecyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+        eventListRecyclerView.setAdapter(new EventItemAdapter(events));
+    }
+
     /**
      * 获取需要显示的事件
      *
@@ -163,11 +183,12 @@ public class MainActivity extends BaseActivity
 
         List<Event> displayEvents = new ArrayList<>();
 
-        String nowDayBegin = TimeUtils.getCurTimeString().substring(0,10)+" 00:00:00";
-        String nowDayEnd = TimeUtils.getCurTimeString().substring(0,10)+" 24:00:00";
-        long nowDayBeginMill = TimeUtils.string2Milliseconds(nowDayBegin);
-        long nowDayEndMill = TimeUtils.string2Milliseconds(nowDayEnd);
-        LogUtils.d("MainActivity", "nowDayBegin:"+nowDayBegin);
+        TimeUtils.date2Milliseconds(date);
+
+//        String nowDayBegin = TimeUtils.getCurTimeString().substring(0,10)+" 00:00:00";
+//        String nowDayEnd = TimeUtils.getCurTimeString().substring(0,10)+" 24:00:00";
+        long dayBeginMill = TimeUtils.date2Milliseconds(date);
+        long dayEndMill = dayBeginMill+ONE_DAY_SEC*1000;
 
         List<Event> allEvents = queryEvents();
 
@@ -177,9 +198,9 @@ public class MainActivity extends BaseActivity
             long eventStartTimeMill = TimeUtils.string2Milliseconds(event.getStartTime().getDate());
             long eventEndTimeMill = TimeUtils.string2Milliseconds(event.getEndTime().getDate());
 
-            if (nowDayBeginMill < eventStartTimeMill && eventStartTimeMill < nowDayEndMill){
+            if (dayBeginMill < eventStartTimeMill && eventStartTimeMill < dayEndMill){
                 displayEvents.add(event);
-            }else if (nowDayBeginMill < eventEndTimeMill && nowDayBeginMill > eventStartTimeMill){
+            }else if (dayBeginMill < eventEndTimeMill && dayBeginMill > eventStartTimeMill){
                 displayEvents.add(event);
             }
         }
@@ -203,7 +224,9 @@ public class MainActivity extends BaseActivity
                 String name = cursor.getString(cursor.getColumnIndex("name"));
                 int mode = cursor.getInt(cursor.getColumnIndex("mode"));
                 String startTime = cursor.getString(cursor.getColumnIndex("startTime"));
+                long startTimeMillSeconds = cursor.getLong(cursor.getColumnIndex("startTimeMillSeconds"));
                 String endTime = cursor.getString(cursor.getColumnIndex("endTime"));
+                long endTimeMillSeconds = cursor.getLong(cursor.getColumnIndex("endTimeMillSeconds"));
                 String remindTime = cursor.getString(cursor.getColumnIndex("remindTime"));
                 int pri = cursor.getInt(cursor.getColumnIndex("pri"));
                 String address = cursor.getString(cursor.getColumnIndex("address"));
@@ -216,13 +239,15 @@ public class MainActivity extends BaseActivity
                 event.setName(name);
                 event.setMode(mode);
                 event.setStartTime(new BmobDate(TimeUtils.string2Date(startTime)));
+                event.setStartTimeMillSeconds(startTimeMillSeconds);
                 event.setEndTime(new BmobDate(TimeUtils.string2Date(endTime)));
+                event.setEndTimeMillSeconds(endTimeMillSeconds);
                 event.setRemindTime(new BmobDate(TimeUtils.string2Date(remindTime)));
                 event.setPri(pri);
                 event.setAddress(address);
                 event.setRemarks(remarks);
                 event.setTag(tag);
-                event.setFinish(isFinish);
+                event.setIsFinish(isFinish);
 
                 events.add(event);
 
@@ -231,4 +256,40 @@ public class MainActivity extends BaseActivity
         cursor.close();
         return events;
     }
+
+    @Override
+    public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        LogUtils.d("MainActivity","OnDateSelect");
+        if (date == null){
+            LogUtils.w("MainActivity","date == null");
+        }else {
+            int year = date.getYear();
+            int month = date.getMonth()+1;
+            int day = date.getDay();
+
+            String monthString = "";
+            String dayString = "";
+
+            if (month < 10){
+                monthString = "0"+String.valueOf(month);
+            }else {
+                monthString = String.valueOf(month);
+            }
+
+            if (day < 10){
+                dayString = "0"+String.valueOf(day);
+            }else{
+                dayString = String.valueOf(day);
+            }
+            String dateString = year+"-"+monthString+"-"+dayString+" "+"00:00:00";
+            List<Event> displayEvents = getDisplayEvents(TimeUtils.string2Date(dateString));
+            initData(displayEvents);
+        }
+    }
+
+    @Override
+    public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
+    }
+
+
 }
