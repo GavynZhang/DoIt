@@ -179,7 +179,7 @@ public class EventRemindTimePriDialogActivity extends BaseActivity implements Vi
      */
     private void setTmpLevel(){
         SharedPreferences pref = getSharedPreferences("level_tmp", MODE_PRIVATE);
-        int tmpNormalLevel = pref.getInt("normal_mode_level", 1);
+        int tmpNormalLevel = pref.getInt("normal_mode_level", 3);
         int tmpTomatoLevel = pref.getInt("tomato_mode_level", 1);
 
         int tmp;

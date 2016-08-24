@@ -41,7 +41,7 @@ public class SignInState implements UserState {
             values.put("address", event.getAddress());
             values.put("remarks", event.getRemarks());
             values.put("tag", event.getTag());
-            values.put("isFinish", event.getFinish());
+            values.put("isFinish", event.getFinish().intValue());
             db.insert("Event", null, values);
             LogUtils.i("SignInState","Save to local Ok: "+" username: "+getUser().getUsername()+" eventName: "+event.getName());
 

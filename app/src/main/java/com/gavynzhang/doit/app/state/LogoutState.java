@@ -14,7 +14,7 @@ import com.gavynzhang.doit.utils.LogUtils;
  */
 public class LogoutState implements UserState {
 
-    private MyDatabaseHelper dbHelper = new MyDatabaseHelper(MyApplication.getContext(), "LocalEvent.db", null, 1);
+    private MyDatabaseHelper dbHelper = MyDatabaseHelper.getMyDatabasesHelper();
 
     @Override
     public void saveEventData(Event event) {
@@ -33,10 +33,10 @@ public class LogoutState implements UserState {
             values.put("address", event.getAddress());
             values.put("remarks", event.getRemarks());
             values.put("tag", event.getTag());
-            values.put("isFinish", event.getFinish());
+            values.put("isFinish", event.getFinish().intValue());
             db.insert("Event", null, values);
 
-            Toast.makeText(MyApplication.getContext(),event.getRemindTime().getDate(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(MyApplication.getContext(),"startTime: "+event.getStartTime().getDate(), Toast.LENGTH_SHORT).show();
 
             values.clear();
 

@@ -20,7 +20,7 @@ public class Event extends BmobObject{
     private String address;
     private String remarks;
     private String tag;
-    private Boolean isFinish;
+    private Number isFinish;
     private Number tomatoNum;
 
     public String getUserName() {
@@ -63,11 +63,11 @@ public class Event extends BmobObject{
         this.endTime = endTime;
     }
 
-    public Boolean getFinish() {
+    public Number getFinish() {
         return isFinish;
     }
 
-    public void setFinish(Boolean finish) {
+    public void setFinish(Number finish) {
         isFinish = finish;
     }
 

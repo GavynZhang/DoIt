@@ -336,7 +336,7 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
                 eventRemarksString = eventRemarks.getText().toString();
                 eventTagString = eventTag.getText().toString();
                 getEvent();
-
+                LoginContext.getLoginContext().setState(new LogoutState());
                 LoginContext.getLoginContext().saveDate(mEvent);
                 break;
             default:
@@ -348,6 +348,8 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
      * 组装Event
      */
     private void getEvent() {
+        //设置未完成
+        mEvent.setFinish(0);
         //事件模式
         mEvent.setMode(nowMode);
         //事件名称
@@ -385,6 +387,22 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
             startDate = new BmobDate(tmpStartDate);
             //事件开始时间
             mEvent.setStartTime(startDate);
+        }else if(startDay != null && startTime == null){
+
+            String defaultStartDateString = mEvent.getStartTime().getDate();
+            LogUtils.d("defaultStartDateString", "defaultStartDateString: "+defaultStartDateString);
+            finalStartTime = startDay+" "+defaultStartDateString.substring(11, 19);
+//            LogUtils.d("qwertyuiop",finalStartTime);ok
+            tmpStartDate = TimeUtils.string2Date(finalStartTime);
+            mEvent.setStartTime(new BmobDate(tmpStartDate));
+
+        }else if (startDay == null && startTime != null){
+
+            String defaultStartDateString = mEvent.getStartTime().getDate();
+            finalStartTime = defaultStartDateString.substring(0,10)+" "+startTime;
+            tmpStartDate = TimeUtils.string2Date(finalStartTime, format);
+            mEvent.setStartTime(new BmobDate(tmpStartDate));
+
         }
 
         BmobDate endDate = null;
@@ -394,22 +412,42 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
             endDate = new BmobDate(TimeUtils.string2Date(finalEndTime, format));
             //事件结束时间
             mEvent.setEndTime(endDate);
+        }else if (endDay != null && endTime == null){
+
+            String defaultEndDateString = mEvent.getEndTime().getDate();
+            finalEndTime = endDay+" "+defaultEndDateString.substring(11,19);
+            mEvent.setEndTime(new BmobDate(TimeUtils.string2Date(finalEndTime)));
+
+        }else if (endDay == null && endTime != null){
+
+            String defaultEndDateString = mEvent.getEndTime().getDate();
+            finalEndTime = defaultEndDateString.substring(0,10)+" "+endTime;
+            LogUtils.d("NewEventActivity","(endDay == null && endTime != null)   finalEndTime: "+finalEndTime);
+            mEvent.setEndTime(new BmobDate(TimeUtils.string2Date(finalEndTime, format)));
+
         }
 
 
+        SharedPreferences pref = getSharedPreferences("level_tmp", MODE_PRIVATE);
+
         if (nowMode == MODE_NORMAL) {
             mEvent.setPri(-1);
+
+            if (priOrRemindLevel == 0) {
+                priOrRemindLevel = pref.getInt("normal_mode_level", 3);
+            }
+
             LogUtils.d("NewEventActivity","priOrRemindLevel: "+priOrRemindLevel);
             long tmpStartMilliseconds;
 
             //初始化tmpStartMilliseconds
-            if (startDay != null && startTime != null) {
-                tmpStartMilliseconds = TimeUtils.date2Milliseconds(tmpStartDate);
-            }else{
+            if (startDay.equals("") && startTime.equals("")) {
                 tmpStartMilliseconds = TimeUtils.string2Milliseconds(mEvent.getStartTime().getDate());
+            }else {
+                tmpStartMilliseconds = TimeUtils.date2Milliseconds(tmpStartDate);
             }
 
-
+                LogUtils.d("NewEventActivity", "tmpStartDate: "+TimeUtils.milliseconds2String(tmpStartMilliseconds)+"startDay: "+startDay);
 
                 switch (priOrRemindLevel) {
                     case 1:
@@ -453,6 +491,13 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
 
 
         } else {
+
+            if (priOrRemindLevel == 0){
+
+                priOrRemindLevel = pref.getInt("tomato_mode_level", 1);
+
+            }
+
             if (endDay != null && endTime != null) {
                 //番茄事件设置提醒时间（不提醒，防NullPointer）
                 mEvent.setRemindTime(endDate);
@@ -466,9 +511,9 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-    private void setDefaultEndDayWhenSetStartDay(){
-        endDay = startDay;
-    }
+//    private void setDefaultEndDayWhenSetStartDay(){
+//        endDay = startDay;
+//    }
 
     /**
      * 获取Dialog返回的数据
@@ -603,6 +648,10 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
                     dayOfMonthString = String.valueOf(dayOfMonth);
                 }
                 startDay = year + "-" + month + "-" + dayOfMonth;
+
+                endDay = startDay;
+                eventEndDay.setText(year+ "-" + monthString + "-" + dayOfMonthString + "周" + TimeUtils.getWeek(startDay));
+
                 eventStartDay.setText(year+ "-" + monthString + "-" + dayOfMonthString + "周" + TimeUtils.getWeek(startDay));
             }
         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();

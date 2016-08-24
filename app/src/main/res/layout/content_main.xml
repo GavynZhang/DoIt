@@ -23,6 +23,7 @@
         app:mcv_tileHeight="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
     <ImageView
         android:layout_below="@+id/calendar_view"
         android:background="@color/md_grey_300"

@@ -42,7 +42,13 @@ public class EventItemAdapter extends RecyclerView.Adapter {
         try {
             vh.getItemEventName().setText(eventData.getName());
             vh.getItemEventTime().setText(eventData.getStartTime().getDate() + "-" + eventData.getEndTime().getDate());
-            vh.getItemEventCheckBox().setChecked(eventData.getFinish());
+            boolean isFinish;
+            if (eventData.getFinish().intValue() == 0){
+                isFinish = false;
+            }else {
+                isFinish = true;
+            }
+            vh.getItemEventCheckBox().setChecked(isFinish);
             if (eventData.getTag() != null) {
                 vh.getItemEventTag().setText(eventData.getTag());
             } else {

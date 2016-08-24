@@ -4,10 +4,14 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.gavynzhang.doit.app.state.MyApplication;
+
 /**
  * Created by GavynZhang on 2016/8/17.
  */
 public class MyDatabaseHelper extends SQLiteOpenHelper{
+
+    private static MyDatabaseHelper dbHelper = new MyDatabaseHelper(MyApplication.getContext(), "LocalEvent.db", null, 1);
 
     /**
      * username :所属用户
@@ -75,5 +79,9 @@ public class MyDatabaseHelper extends SQLiteOpenHelper{
         db.execSQL("drop table if exists Event");
         db.execSQL("drop table if exists Tomato");
         onCreate(db);
+    }
+
+    public static MyDatabaseHelper getMyDatabasesHelper(){
+        return dbHelper;
     }
 }
