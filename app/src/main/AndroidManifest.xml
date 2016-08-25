@@ -43,8 +43,10 @@
         <activity android:name=".ui.activities.NewEventActivity">
         </activity>
         <activity
-            android:theme="@style/Theme.AppCompat.Dialog"
-            android:name=".ui.activities.EventRemindTimePriDialogActivity">
+            android:name=".ui.activities.EventRemindTimePriDialogActivity"
+            android:theme="@style/Theme.AppCompat.Dialog">
+        </activity>
+        <activity android:name=".ui.activities.EventDetailsActivity">
         </activity>
     </application>
 

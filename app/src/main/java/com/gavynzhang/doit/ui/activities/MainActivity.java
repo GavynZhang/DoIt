@@ -33,11 +33,13 @@ import com.gavynzhang.doit.ui.decorator.DayDisplayDecorator;
 import com.gavynzhang.doit.utils.LogUtils;
 import com.gavynzhang.doit.utils.TimeUtils;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -47,6 +49,8 @@ import cn.bmob.v3.datatype.BmobDate;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         OnDateSelectedListener,OnMonthChangedListener {
+
+    public static MainActivity sMainActivity;
 
     private static final int ONE_DAY_SEC = 86400;
 
@@ -59,6 +63,7 @@ public class MainActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setContentView(R.layout.activity_main);
+        sMainActivity = this;
         Bmob.initialize(this, "9f9400b18ebbb85039231d8bd0cf24d2");
 
         mCalendarView = $(R.id.calendar_view);
@@ -66,6 +71,43 @@ public class MainActivity extends BaseActivity
 
         mCalendarView.addDecorator(new DayDisplayDecorator(queryEvents()));
         mCalendarView.setOnDateChangedListener(this);
+        //设置初始进入界面时选择的是今天
+        mCalendarView.setSelectedDate(TimeUtils.getCurTimeDate());
+        List<Event> displayEvents = getDisplayEvents(TimeUtils.getCurTimeDate());
+        initData(displayEvents);
+
+//        eventListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                if (!recyclerView.canScrollVertically(-1)) {
+//                    onScrolledToTop();
+//                } else if (!recyclerView.canScrollVertically(1)) {
+//                    onScrolledToBottom();
+//                } else if (dy < 0) {
+//                    onScrolledUp();
+//                } else if (dy > 0) {
+//                    onScrolledDown();
+//                }
+//            }
+//
+//            public void onScrolledUp() {
+//                LogUtils.d("MainActivity", "onScrolledUp");
+//            }
+//
+//            public void onScrolledDown() {
+//                LogUtils.d("MainActivity", "onScrolledDown");
+//                mCalendarView.state().edit().setCalendarDisplayMode(CalendarMode.WEEKS).commit();
+//            }
+//
+//            public void onScrolledToTop() {
+//                LogUtils.d("MainActivity", "onScrolledToTop");
+//                mCalendarView.state().edit().setCalendarDisplayMode(CalendarMode.MONTHS).commit();
+//            }
+//
+//            public void onScrolledToBottom() {
+//                LogUtils.d("MainActivity", "onScrolledToBottom");
+//            }
+//        });
 
         final Toolbar toolbar = $(R.id.toolbar);
         setSupportActionBar(toolbar);

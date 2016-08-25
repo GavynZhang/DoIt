@@ -1,15 +1,20 @@
 package com.gavynzhang.doit.ui.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gavynzhang.doit.R;
+import com.gavynzhang.doit.app.state.MyApplication;
 import com.gavynzhang.doit.model.entities.Event;
+import com.gavynzhang.doit.ui.activities.EventDetailsActivity;
+import com.gavynzhang.doit.ui.activities.MainActivity;
 
 import java.util.List;
 
@@ -42,10 +47,25 @@ public class EventItemAdapter extends RecyclerView.Adapter {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         EventViewHolder vh = (EventViewHolder)holder;
         final Event eventData = mEvents.get(position);
+        vh.getItemEventCheckBox().setEnabled(false);
 
         try {
             vh.getItemEventName().setText(eventData.getName());
-            vh.getItemEventTime().setText(eventData.getStartTime().getDate() + "-" + eventData.getEndTime().getDate());
+
+            String startDateString = eventData.getStartTime().getDate();
+            String endDateString = eventData.getEndTime().getDate();
+            //如果是普通事件
+            if (eventData.getMode().intValue() == 0) {
+                if (startDateString.substring(0, 10).equals(endDateString.substring(0, 10))) {
+                    vh.getItemEventTime().setText(startDateString.substring(11, 16) + " - " + endDateString.substring(11, 16));
+                } else {
+                    vh.getItemEventTime().setText(startDateString.substring(5, 16) + " —— " + endDateString.substring(5, 16));
+                }
+            }else{
+                //截止时间
+                vh.getItemEventTime().setText("截止时间："+endDateString.substring(5, 16));
+            }
+
             boolean isFinish;
             if (eventData.getIsFinish().intValue() == 0){
                 isFinish = false;
@@ -53,10 +73,16 @@ public class EventItemAdapter extends RecyclerView.Adapter {
                 isFinish = true;
             }
             vh.getItemEventCheckBox().setChecked(isFinish);
-            if (eventData.getTag() != null) {
-                vh.getItemEventTag().setText(eventData.getTag());
-            } else {
+
+            if (eventData.getTag().equals("")) {
                 vh.getItemTagImg().setVisibility(View.GONE);
+            } else {
+                vh.getItemEventTag().setText(eventData.getTag());
+                vh.getItemTagImg().setVisibility(View.VISIBLE);
+            }
+
+            if (eventData.getMode().intValue() == 1){
+                vh.getEventItemLayout().setBackgroundColor(MyApplication.getContext().getResources().getColor(R.color.cardview_bac));
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -69,6 +95,14 @@ public class EventItemAdapter extends RecyclerView.Adapter {
             @Override
             public void onClick(View view) {
 
+                Intent intent = new Intent(MainActivity.sMainActivity, EventDetailsActivity.class);
+                MainActivity.sMainActivity.startActivity(intent);
+
+                if(eventData.getMode().intValue() == 0){
+
+                }else{
+
+                }
             }
         });
     }
@@ -84,6 +118,7 @@ public class EventItemAdapter extends RecyclerView.Adapter {
         private TextView itemEventTime;
         private TextView itemEventTag;
         private AppCompatCheckBox itemEventCheckBox;
+        private RelativeLayout eventItemLayout;
 
         private ImageView itemTagImg;
 
@@ -94,9 +129,18 @@ public class EventItemAdapter extends RecyclerView.Adapter {
             itemEventTime = (TextView)itemView.findViewById(R.id.item_event_time);
             itemEventTag = (TextView)itemView.findViewById(R.id.item_event_tag);
             itemEventCheckBox = (AppCompatCheckBox)itemView.findViewById(R.id.item_checkbox);
+            eventItemLayout = (RelativeLayout)itemView.findViewById(R.id.event_item_layout);
             itemTagImg = (ImageView)itemView.findViewById(R.id.event_item_tag_img);
 
 
+        }
+
+        public RelativeLayout getEventItemLayout() {
+            return eventItemLayout;
+        }
+
+        public void setEventItemLayout(RelativeLayout eventItemLayout) {
+            this.eventItemLayout = eventItemLayout;
         }
 
         public AppCompatCheckBox getItemEventCheckBox() {

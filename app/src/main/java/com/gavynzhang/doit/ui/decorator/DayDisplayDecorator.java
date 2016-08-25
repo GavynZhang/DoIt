@@ -35,8 +35,9 @@ public class DayDisplayDecorator implements DayViewDecorator {
         long eventStartTimeMill = 0;
         long eventEndTimeMill = 0;
 
-        for (int i = 0; i < mEvents.size(); i++){
-            Event event = mEvents.get(i);
+//        for (int i = 0; i < mEvents.size(); i++){
+        for (Event event:mEvents){
+            //Event event = mEvents.get(i);
 
             eventStartTimeMill = event.getStartTimeMillSeconds().longValue();
             eventEndTimeMill = event.getEndTimeMillSeconds().longValue();

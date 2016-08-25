@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background_y"
+    tools:context="com.gavynzhang.doit.ui.activities.EventDetailsActivity">
+
+    <include layout="@layout/toolbar"/>
+
+    <TextView
+        android:id="@+id/event_detail_name"
+        android:layout_below="@+id/toolbar"
+        android:text="测试文字文字"
+        android:textSize="24sp"
+        android:textColor="@color/mint_green_dark"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <RelativeLayout
+        android:id="@+id/event_details_tag_relative"
+        android:layout_below="@+id/event_detail_name"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/event_details_tag_img"
+            android:src="@drawable/tag"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:id="@+id/event_details_tag_text"
+            android:text="学习"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/event_details_tag_img"
+            android:layout_toEndOf="@+id/event_details_tag_img"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/activity_event_details_line1"
+        android:layout_below="@+id/event_details_tag_relative"
+        android:background="@color/cardview_bac"
+        android:layout_marginTop="@dimen/event_details_line_margin"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <RelativeLayout
+        android:id="@+id/event_details_remark_relative"
+        android:layout_below="@+id/activity_event_details_line1"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/event_details_remark_img"
+            android:src="@drawable/ic_sort_black_24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:id="@+id/event_detail_time_text"
+            android:text="临时加作业"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/event_details_remark_img"
+            android:layout_toEndOf="@+id/event_details_remark_img"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/activity_event_details_line2"
+        android:layout_below="@+id/event_details_remark_relative"
+        android:background="@color/cardview_bac"
+        android:layout_marginTop="@dimen/event_details_line_margin"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <RelativeLayout
+        android:id="@+id/event_details_address_relative"
+        android:layout_below="@+id/activity_event_details_line2"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/event_details_address_img"
+            android:src="@drawable/ic_place_black_24dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:id="@+id/event_details_address_text"
+            android:text="重庆邮电大学"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/event_details_address_img"
+            android:layout_toEndOf="@+id/event_details_address_img"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/activity_event_details_line3"
+        android:layout_below="@+id/event_details_address_relative"
+        android:background="@color/cardview_bac"
+        android:layout_marginTop="@dimen/event_details_line_margin"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <RelativeLayout
+        android:id="@+id/event_details_time_relative"
+        android:layout_below="@+id/activity_event_details_line3"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/event_details_time_img"
+            android:src="@drawable/time"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
+
+        <TextView
+            android:id="@+id/event_details_time_text"
+            android:text="2016-08-27 14:30 —— 2016-08-28 15:30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/event_details_time_img"
+            android:layout_toEndOf="@+id/event_details_time_img"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/activity_event_details_line4"
+        android:background="@color/cardview_bac"
+        android:layout_below="@+id/event_details_time_relative"
+        android:layout_marginTop="@dimen/event_details_line_margin"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
+    <RelativeLayout
+        android:id="@+id/event_details_remind_pri_relative"
+        android:layout_below="@+id/activity_event_details_line4"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/event_details_remind_pri_img"
+            android:src="@drawable/ic_alarm_black_24dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"/>
+        <TextView
+            android:id="@+id/event_details_remind_pri_text"
+            android:text="提前10分钟"
+            android:textSize="16sp"
+            android:layout_toRightOf="@id/event_details_remind_pri_img"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageView
+            android:id="@+id/event_details_remind_pri_drop"
+            android:src="@drawable/ic_arrow_drop_down_black_24dp"
+            android:layout_width="23dp"
+            android:layout_height="23dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="38dp"
+            android:layout_marginEnd="38dp"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
