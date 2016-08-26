@@ -455,12 +455,13 @@ public class NewEventActivity extends BaseActivity implements View.OnClickListen
         SharedPreferences pref = getSharedPreferences("level_tmp", MODE_PRIVATE);
 
         if (nowMode == MODE_NORMAL) {
-            mEvent.setPri(-1);
+
 
             if (priOrRemindLevel == 0) {
                 priOrRemindLevel = pref.getInt("normal_mode_level", 3);
             }
 
+            mEvent.setPri(priOrRemindLevel);
             LogUtils.d("NewEventActivity","priOrRemindLevel: "+priOrRemindLevel);
             long tmpStartMilliseconds;
 

@@ -54,6 +54,8 @@ public class MainActivity extends BaseActivity
 
     private static final int ONE_DAY_SEC = 86400;
 
+    private String tmpSelectDate;
+
     private MaterialCalendarView mCalendarView;
     private RecyclerView eventListRecyclerView;
     private MyDatabaseHelper dbHelper = MyDatabaseHelper.getMyDatabasesHelper();
@@ -64,6 +66,7 @@ public class MainActivity extends BaseActivity
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setContentView(R.layout.activity_main);
         sMainActivity = this;
+        LogUtils.d("MainActivity", "onCreate");
         Bmob.initialize(this, "9f9400b18ebbb85039231d8bd0cf24d2");
 
         mCalendarView = $(R.id.calendar_view);
@@ -131,6 +134,23 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (tmpSelectDate == null) {
+            mCalendarView.setSelectedDate(TimeUtils.getCurTimeDate());
+            List<Event> displayEvents = getDisplayEvents(TimeUtils.getCurTimeDate());
+            initData(displayEvents);
+        }else {
+            //加载选择的这一天的数据
+            mCalendarView.setSelectedDate(TimeUtils.string2Date(tmpSelectDate));
+            List<Event> displayEvents = getDisplayEvents(TimeUtils.string2Date(tmpSelectDate));
+            initData(displayEvents);
+        }
+
     }
 
     private boolean isLogin(){
@@ -262,6 +282,7 @@ public class MainActivity extends BaseActivity
         if (cursor.moveToFirst()){
             do{
                 Event event = new Event();
+                int id = cursor.getInt(cursor.getColumnIndex("id"));
                 String username = cursor.getString(cursor.getColumnIndex("username"));
                 String name = cursor.getString(cursor.getColumnIndex("name"));
                 int mode = cursor.getInt(cursor.getColumnIndex("mode"));
@@ -276,7 +297,8 @@ public class MainActivity extends BaseActivity
                 String tag = cursor.getString(cursor.getColumnIndex("tag"));
                 int isFinish = cursor.getInt(cursor.getColumnIndex("isFinish"));
 
-
+                event.setId(id);
+                LogUtils.d("MainActivity", "Event Id: "+id);
                 event.setUserName(username);
                 event.setName(name);
                 event.setMode(mode);
@@ -286,6 +308,7 @@ public class MainActivity extends BaseActivity
                 event.setEndTimeMillSeconds(endTimeMillSeconds);
                 event.setRemindTime(new BmobDate(TimeUtils.string2Date(remindTime)));
                 event.setPri(pri);
+                LogUtils.d("MainActivity", "pri: "+pri);
                 event.setAddress(address);
                 event.setRemarks(remarks);
                 event.setTag(tag);
@@ -324,6 +347,8 @@ public class MainActivity extends BaseActivity
                 dayString = String.valueOf(day);
             }
             String dateString = year+"-"+monthString+"-"+dayString+" "+"00:00:00";
+            //保存选择的日期，在onResume时加载这一天的数据
+            tmpSelectDate = dateString;
             List<Event> displayEvents = getDisplayEvents(TimeUtils.string2Date(dateString));
             initData(displayEvents);
         }

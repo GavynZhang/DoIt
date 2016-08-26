@@ -22,10 +22,19 @@ import com.gavynzhang.doit.utils.LogUtils;
  */
 public class EventRemindTimePriDialogActivity extends BaseActivity implements View.OnClickListener{
 
+    private static final String REMIND_PRI_DIALOG_ACTIVITY = "EventRemindTinePriDialogActivity";
+
     private static final int MODE_NORMAL = 0;
     private static final int MODE_TOMATO = 1;
 
+    private static final int CREATE_FROM_NEW_EVENT_ACTIVITY = 0;
+    private static final int CREATE_FROM_EVENT_DETAILS_ACTIVITY = 1;
+
     private int nowMode = MODE_NORMAL;
+
+    private int createMode = CREATE_FROM_NEW_EVENT_ACTIVITY;
+
+    private int detailEventRemindPriLevel = 0;
 
     private TextView dialog_title;
 
@@ -53,7 +62,22 @@ public class EventRemindTimePriDialogActivity extends BaseActivity implements Vi
 
         //根据NewEventActivity设置nowMode
         Intent intent = getIntent();
-        nowMode = intent.getIntExtra("event_mode",MODE_NORMAL);
+        if (intent.getIntExtra("event_mode",-1) != -1) {
+            nowMode = intent.getIntExtra("event_mode", -1);
+
+        }
+        if (intent.getIntExtra("detail_event_mode", -1) != -1){
+            nowMode = intent.getIntExtra("detail_event_mode", -1);
+            createMode = CREATE_FROM_EVENT_DETAILS_ACTIVITY;
+            detailEventRemindPriLevel = intent.getIntExtra("detail_event_remind_pri_level", 3);
+        }
+
+//        detailTomatoEventPriLevel = intent.getIntExtra()
+
+        LogUtils.d(REMIND_PRI_DIALOG_ACTIVITY, "nowMode: "+nowMode);
+        LogUtils.d(REMIND_PRI_DIALOG_ACTIVITY, "detailNormalEventRemindLevel: "+detailEventRemindPriLevel);
+
+
 
         //初始化视图
         initViews();
@@ -178,15 +202,27 @@ public class EventRemindTimePriDialogActivity extends BaseActivity implements Vi
      * 设置保存的选择
      */
     private void setTmpLevel(){
-        SharedPreferences pref = getSharedPreferences("level_tmp", MODE_PRIVATE);
-        int tmpNormalLevel = pref.getInt("normal_mode_level", 3);
-        int tmpTomatoLevel = pref.getInt("tomato_mode_level", 1);
 
         int tmp;
-        if (nowMode == MODE_NORMAL){
-            tmp = tmpNormalLevel;
+
+        if (createMode == CREATE_FROM_NEW_EVENT_ACTIVITY) {
+
+            SharedPreferences pref = getSharedPreferences("level_tmp", MODE_PRIVATE);
+            int tmpNormalLevel = pref.getInt("normal_mode_level", 3);
+            int tmpTomatoLevel = pref.getInt("tomato_mode_level", 1);
+
+
+            if (nowMode == MODE_NORMAL) {
+                tmp = tmpNormalLevel;
+            } else {
+                tmp = tmpTomatoLevel;
+            }
         }else{
-            tmp = tmpTomatoLevel;
+            tmp = detailEventRemindPriLevel;
+            if (nowMode == MODE_TOMATO) {
+                dialog_title.setText("选择优先级");
+            }else
+                dialog_title.setText("更改提醒时间");
         }
 
         switch (tmp){

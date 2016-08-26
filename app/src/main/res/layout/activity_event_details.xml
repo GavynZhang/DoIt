@@ -79,7 +79,7 @@
             android:layout_alignParentStart="true"/>
 
         <TextView
-            android:id="@+id/event_detail_time_text"
+            android:id="@+id/event_details_remark_text"
             android:text="临时加作业"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

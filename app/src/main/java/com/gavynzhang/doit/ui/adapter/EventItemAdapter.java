@@ -96,6 +96,7 @@ public class EventItemAdapter extends RecyclerView.Adapter {
             public void onClick(View view) {
 
                 Intent intent = new Intent(MainActivity.sMainActivity, EventDetailsActivity.class);
+                intent.putExtra("event", eventData);
                 MainActivity.sMainActivity.startActivity(intent);
 
                 if(eventData.getMode().intValue() == 0){

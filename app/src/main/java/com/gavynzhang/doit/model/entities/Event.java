@@ -1,5 +1,7 @@
 package com.gavynzhang.doit.model.entities;
 
+import java.io.Serializable;
+
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.BmobUser;
 import cn.bmob.v3.datatype.BmobDate;
@@ -7,8 +9,9 @@ import cn.bmob.v3.datatype.BmobDate;
 /**
  * Created by GavynZhang on 2016/8/17.
  */
-public class Event extends BmobObject{
+public class Event extends BmobObject implements Serializable{
 
+    private Number id;
     private String userName;
     private MyUser user;
     private String name;
@@ -24,6 +27,14 @@ public class Event extends BmobObject{
     private String tag;
     private Number isFinish;
     private Number tomatoNum;
+
+    public Number getId() {
+        return id;
+    }
+
+    public void setId(Number id) {
+        this.id = id;
+    }
 
     public Number getEndTimeMillSeconds() {
         return endTimeMillSeconds;
