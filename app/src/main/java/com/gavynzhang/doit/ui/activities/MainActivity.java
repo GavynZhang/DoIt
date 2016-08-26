@@ -28,6 +28,7 @@ import com.gavynzhang.doit.app.state.SignInState;
 import com.gavynzhang.doit.model.db.MyDatabaseHelper;
 import com.gavynzhang.doit.model.entities.Event;
 import com.gavynzhang.doit.model.entities.MyUser;
+import com.gavynzhang.doit.service.RemindService;
 import com.gavynzhang.doit.ui.adapter.EventItemAdapter;
 import com.gavynzhang.doit.ui.decorator.DayDisplayDecorator;
 import com.gavynzhang.doit.utils.LogUtils;
@@ -76,7 +77,7 @@ public class MainActivity extends BaseActivity
         mCalendarView.setOnDateChangedListener(this);
         //设置初始进入界面时选择的是今天
         mCalendarView.setSelectedDate(TimeUtils.getCurTimeDate());
-        List<Event> displayEvents = getDisplayEvents(TimeUtils.getCurTimeDate());
+        List<Event> displayEvents = getEventsByDate(TimeUtils.getCurTimeDate());
         initData(displayEvents);
 
 //        eventListRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -134,6 +135,9 @@ public class MainActivity extends BaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+//        Intent intent = new Intent(this, RemindService.class);
+//        startService(intent);
     }
 
     @Override
@@ -142,12 +146,12 @@ public class MainActivity extends BaseActivity
 
         if (tmpSelectDate == null) {
             mCalendarView.setSelectedDate(TimeUtils.getCurTimeDate());
-            List<Event> displayEvents = getDisplayEvents(TimeUtils.getCurTimeDate());
+            List<Event> displayEvents = getEventsByDate(TimeUtils.getCurTimeDate());
             initData(displayEvents);
         }else {
             //加载选择的这一天的数据
             mCalendarView.setSelectedDate(TimeUtils.string2Date(tmpSelectDate));
-            List<Event> displayEvents = getDisplayEvents(TimeUtils.string2Date(tmpSelectDate));
+            List<Event> displayEvents = getEventsByDate(TimeUtils.string2Date(tmpSelectDate));
             initData(displayEvents);
         }
 
@@ -237,16 +241,14 @@ public class MainActivity extends BaseActivity
     /**
      * 获取需要显示的事件
      *
-     * @param date
+     * @param date ；日期
      */
-    private List<Event> getDisplayEvents(Date date){
+    private List<Event> getEventsByDate(Date date){
 
         List<Event> displayEvents = new ArrayList<>();
 
         TimeUtils.date2Milliseconds(date);
 
-//        String nowDayBegin = TimeUtils.getCurTimeString().substring(0,10)+" 00:00:00";
-//        String nowDayEnd = TimeUtils.getCurTimeString().substring(0,10)+" 24:00:00";
         long dayBeginMill = TimeUtils.date2Milliseconds(date);
         long dayEndMill = dayBeginMill+ONE_DAY_SEC*1000;
 
@@ -265,6 +267,79 @@ public class MainActivity extends BaseActivity
             }
         }
         return displayEvents;
+    }
+
+    /**
+     * @return 标签List
+     */
+    private List<String> getEventAllTags(){
+        List<String> tags = new ArrayList<>();
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query("Event", null, null, null, null, null, null);
+        if (cursor.moveToFirst()){
+            do {
+                String tag;
+                if ((tag = cursor.getString(cursor.getColumnIndex("tag"))) != null){
+
+                    if (!tags.isEmpty()) {
+
+                        for (String s : tags) {
+                            if (tag.equals(s)) {
+
+                            } else {
+                                tags.add(tag);
+                                LogUtils.d("MainActivity", "tag: "+tag);
+                            }
+                        }
+
+                    }else{
+                        tags.add(tag);
+                        LogUtils.d("MainActivity", "tag: "+tag);
+                    }
+                }
+
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+        return tags;
+    }
+
+    /**
+     * @return 需要提醒的事件List
+     */
+    private List<Event> getRemindEvents(){
+        List<Event> remindEvents = new ArrayList<>();
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query("Event", null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()){
+            do {
+                Event event = new Event();
+
+                if (cursor.getInt(cursor.getColumnIndex("mode")) == 0){
+                    int id = cursor.getInt(cursor.getColumnIndex("id"));
+                    String name = cursor.getString(cursor.getColumnIndex("name"));
+                    String remarks = cursor.getString(cursor.getColumnIndex("remarks"));
+                    String remindTime = cursor.getString(cursor.getColumnIndex("remindTime"));
+
+                    event.setId(id);
+                    event.setName(name);
+                    event.setRemarks(remarks);
+                    event.setRemindTime(new BmobDate(TimeUtils.string2Date(remindTime)));
+
+                    remindEvents.add(event);
+                }
+
+//                long remindTimeMillSec = TimeUtils.string2Milliseconds(cursor.getString(cursor.getColumnIndex("remindTime")));
+
+
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return remindEvents;
     }
 
     /**
@@ -347,7 +422,7 @@ public class MainActivity extends BaseActivity
             String dateString = year+"-"+monthString+"-"+dayString+" "+"00:00:00";
             //保存选择的日期，在onResume时加载这一天的数据
             tmpSelectDate = dateString;
-            List<Event> displayEvents = getDisplayEvents(TimeUtils.string2Date(dateString));
+            List<Event> displayEvents = getEventsByDate(TimeUtils.string2Date(dateString));
             initData(displayEvents);
         }
     }

@@ -2,12 +2,14 @@ package com.gavynzhang.doit.app.state;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.Toast;
 
 import com.gavynzhang.doit.model.db.MyDatabaseHelper;
 import com.gavynzhang.doit.model.entities.Event;
 import com.gavynzhang.doit.model.entities.Tomato;
+import com.gavynzhang.doit.service.RemindService;
 import com.gavynzhang.doit.utils.LogUtils;
 
 /**
@@ -47,6 +49,9 @@ public class LogoutState implements UserState {
             Toast.makeText(MyApplication.getContext(), "Save Fail!!", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
+
+//        Intent intent = new Intent(MyApplication.getContext(), RemindService.class);
+//        MyApplication.getContext().startService(intent);
     }
 
     @Override

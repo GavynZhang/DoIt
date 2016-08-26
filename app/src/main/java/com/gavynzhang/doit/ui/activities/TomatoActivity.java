@@ -27,8 +27,8 @@ import cn.iwgang.countdownview.CountdownView;
 
 public class TomatoActivity extends BaseActivity implements CountdownView.OnCountdownEndListener{
 
-    private static final long TOMATO_WORK_MILL_SEC = 10 * 1000;
-    private static final long TOMATO_REST_MILL_SEC = 10 * 1000;
+    private static final long TOMATO_WORK_MILL_SEC = 1500 * 1000;
+    private static final long TOMATO_REST_MILL_SEC = 300 * 1000;
 
     private static final int MODE_UNSTART = -1;
     private static final int MODE_WORK = 0;

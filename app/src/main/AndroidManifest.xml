@@ -75,6 +75,9 @@
             android:theme="@style/Theme.AppCompat.Dialog"
             android:name=".ui.activities.IsFinishDialogActivity">
         </activity>
+        <service android:name=".service.RemindService">
+        </service>
+
     </application>
 
 </manifest>
