@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.gavynzhang.doit.model.db.MyDatabaseHelper;
 import com.gavynzhang.doit.model.entities.Event;
 import com.gavynzhang.doit.model.entities.MyUser;
+import com.gavynzhang.doit.model.entities.Tomato;
 import com.gavynzhang.doit.utils.LogUtils;
 
 import cn.bmob.v3.exception.BmobException;
@@ -67,5 +68,10 @@ public class SignInState implements UserState {
     @Override
     public Event getEventData() {
         return null;
+    }
+
+    @Override
+    public void saveTomatoData(Tomato tomato) {
+
     }
 }

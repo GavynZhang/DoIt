@@ -10,6 +10,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
     <!-- 获取sd卡写的权限，用于文件上传和下载 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
         android:name=".app.state.MyApplication"
@@ -21,6 +22,8 @@
         <activity
             android:name=".ui.activities.MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -36,17 +39,41 @@
             android:name="UMENG_CHANNEL"
             android:value="Wandoujia"/>
 
-        <activity android:name=".ui.activities.SignInActivity">
+        <activity
+            android:name=".ui.activities.SignInActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.activities.SignUpActivity">
+        <activity
+            android:name=".ui.activities.SignUpActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".ui.activities.NewEventActivity">
+        <activity
+            android:name=".ui.activities.NewEventActivity"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".ui.activities.EventRemindTimePriDialogActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Dialog">
         </activity>
-        <activity android:name=".ui.activities.EventDetailsActivity">
+        <activity
+            android:name=".ui.activities.EventDetailsActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".ui.activities.TomatoActivity"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".ui.activities.TomatoBreakDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Dialog">
+        </activity>
+        <activity
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Dialog"
+            android:name=".ui.activities.IsFinishDialogActivity">
         </activity>
     </application>
 

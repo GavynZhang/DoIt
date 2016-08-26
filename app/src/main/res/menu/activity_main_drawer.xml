@@ -20,12 +20,8 @@
             android:title="Tools"/>
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="关于">
         <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share"/>
             <item
                 android:id="@+id/source_agreement"
                 android:icon="@drawable/agreement"

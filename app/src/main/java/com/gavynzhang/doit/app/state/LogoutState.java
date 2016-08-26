@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.gavynzhang.doit.model.db.MyDatabaseHelper;
 import com.gavynzhang.doit.model.entities.Event;
+import com.gavynzhang.doit.model.entities.Tomato;
 import com.gavynzhang.doit.utils.LogUtils;
 
 /**
@@ -38,7 +39,7 @@ public class LogoutState implements UserState {
             values.put("isFinish", event.getIsFinish().intValue());
             db.insert("Event", null, values);
 
-            Toast.makeText(MyApplication.getContext(),"startTime: "+event.getStartTime().getDate(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(MyApplication.getContext(),"startTime: "+event.getStartTime().getDate(), Toast.LENGTH_SHORT).show();
 
             values.clear();
 
@@ -51,5 +52,23 @@ public class LogoutState implements UserState {
     @Override
     public Event getEventData() {
         return null;
+    }
+
+    @Override
+    public void saveTomatoData(Tomato tomato) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        ContentValues values = new ContentValues();
+
+        try{
+            values.put("eventId", tomato.getEventId().intValue());
+            values.put("startTime", tomato.getStartTime().getDate());
+            values.put("isBroken", tomato.getIsBroken().intValue());
+            values.put("brokenReason", tomato.getBrokenReason());
+
+            db.insert("Tomato", null, values);
+        }catch (Exception e){
+            Toast.makeText(MyApplication.getContext(), "Save Tomato Fail!!", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
 }

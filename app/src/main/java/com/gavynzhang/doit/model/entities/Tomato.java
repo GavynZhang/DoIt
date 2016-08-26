@@ -1,16 +1,18 @@
 package com.gavynzhang.doit.model.entities;
 
+import java.io.Serializable;
+
 import cn.bmob.v3.BmobObject;
 import cn.bmob.v3.datatype.BmobDate;
 
 /**
  * Created by GavynZhang on 2016/8/17.
  */
-public class Tomato extends BmobObject{
+public class Tomato extends BmobObject implements Serializable{
 
-    private Event event;
+    private Number eventId;
     private BmobDate startTime;
-    private Boolean isBroken;
+    private Number isBroken;
     private String brokenReason;
 
     public String getBrokenReason() {
@@ -21,20 +23,20 @@ public class Tomato extends BmobObject{
         this.brokenReason = brokenReason;
     }
 
-    public Event getEvent() {
-        return event;
+    public Number getEventId() {
+        return eventId;
     }
 
-    public void setEvent(Event event) {
-        this.event = event;
+    public void setEventId(Number eventId) {
+        this.eventId = eventId;
     }
 
-    public Boolean getBroken() {
+    public Number getIsBroken() {
         return isBroken;
     }
 
-    public void setBroken(Boolean broken) {
-        isBroken = broken;
+    public void setIsBroken(Number isBroken) {
+        this.isBroken = isBroken;
     }
 
     public BmobDate getStartTime() {

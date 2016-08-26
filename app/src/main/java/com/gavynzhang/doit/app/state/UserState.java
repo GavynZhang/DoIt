@@ -2,6 +2,7 @@ package com.gavynzhang.doit.app.state;
 
 import com.gavynzhang.doit.model.entities.Event;
 import com.gavynzhang.doit.model.entities.MyUser;
+import com.gavynzhang.doit.model.entities.Tomato;
 
 import cn.bmob.v3.datatype.BmobDate;
 
@@ -16,6 +17,8 @@ public interface UserState {
 
     void saveEventData(Event event);
     Event getEventData();
+
+    void saveTomatoData(Tomato tomato);
 
 
 }

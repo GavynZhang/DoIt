@@ -218,5 +218,18 @@
 
     </RelativeLayout>
 
+    <Button
+        android:id="@+id/start_tomato_activity"
+        android:text="开始任务"
+        android:visibility="gone"
+        android:background="@color/cardview_bac"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
 
 </RelativeLayout>

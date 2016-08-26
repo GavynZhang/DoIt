@@ -9,11 +9,13 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.gavynzhang.doit.R;
+import com.gavynzhang.doit.app.ActivityCollector;
 import com.gavynzhang.doit.app.BaseActivity;
 import com.gavynzhang.doit.model.db.MyDatabaseHelper;
 import com.gavynzhang.doit.model.entities.Event;
@@ -50,6 +52,7 @@ public class EventDetailsActivity extends BaseActivity {
     private TextView eventTime;
     private TextView eventPriOrRemind;
     private ImageView eventRemindPriDrop;
+    private Button startTomato;
 
     private RelativeLayout eventPriOrRemindRelativeLayout;
 
@@ -60,12 +63,31 @@ public class EventDetailsActivity extends BaseActivity {
         setContentView(R.layout.activity_event_details);
 
         mEvent = (Event)getIntent().getSerializableExtra("event");
+
+//        //获取从isFinishDialogActivity启动本Activity的Event
+//        if (getIntent().getSerializableExtra("eventFromIsFinishDialog") != null){
+//            LogUtils.d("EventDetailsActivity", "获取从isFinishDialogActivity启动本Activity的Event成功");
+//            mEvent = (Event)getIntent().getSerializableExtra("eventFromIsFinishDialog");
+//        }
+
         pri = mEvent.getPri().intValue();
 
         LogUtils.d("EventDetailsActivity", "mEvent.getName(): "+mEvent.getName());
 
         initViews();
         setText();
+
+        if (mEvent.getMode().intValue() == 1){
+            startTomato.setVisibility(View.VISIBLE);
+
+            //如果该事件已完成，设置按钮文字，颜色及不可点击
+            if (mEvent.getIsFinish().intValue() == 1){
+                startTomato.setText("已完成");
+                startTomato.setEnabled(false);
+                startTomato.setTextColor(getResources().getColor(R.color.md_grey_400));
+            }
+
+        }
 
         mToolbar = $(R.id.toolbar);
         mToolbar.setNavigationIcon(R.drawable.back);
@@ -90,7 +112,27 @@ public class EventDetailsActivity extends BaseActivity {
             }
         });
 
+        startTomato.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(EventDetailsActivity.this, TomatoActivity.class);
+                intent.putExtra("event",mEvent);
+                startActivity(intent);
+            }
+        });
 
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+//        //获取从isFinishDialogActivity启动本Activity的Event
+//        if (getIntent().getSerializableExtra("eventFromIsFinishDialog") != null){
+//            LogUtils.d("EventDetailsActivity", "获取从isFinishDialogActivity启动本Activity的Event成功");
+//            mEvent = (Event)getIntent().getSerializableExtra("eventFromIsFinishDialog");
+//        }
     }
 
     @Override
@@ -197,6 +239,7 @@ public class EventDetailsActivity extends BaseActivity {
         eventPriOrRemind = $(R.id.event_details_remind_pri_text);
         eventPriOrRemindRelativeLayout = $(R.id.event_details_remind_pri_relative);
         eventRemindPriDrop = $(R.id.event_details_remind_pri_drop);
+        startTomato = $(R.id.start_tomato_activity);
     }
 
     private void setText(){

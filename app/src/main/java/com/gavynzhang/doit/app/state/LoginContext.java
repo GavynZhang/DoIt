@@ -1,6 +1,7 @@
 package com.gavynzhang.doit.app.state;
 
 import com.gavynzhang.doit.model.entities.Event;
+import com.gavynzhang.doit.model.entities.Tomato;
 
 /**
  * Created by GavynZhang on 2016/8/17.
@@ -31,6 +32,10 @@ public class LoginContext{
 
     public Event getDate(){
         return mState.getEventData();
+    }
+
+    public void saveTomatoDate(Tomato tomato){
+        mState.saveTomatoData(tomato);
     }
 
 }
