@@ -62,29 +62,78 @@ public class GetEvents {
         if (cursor.moveToFirst()){
             do {
                 String tag;
-                if ((tag = cursor.getString(cursor.getColumnIndex("tag"))) != null){
+                if (!(tag = cursor.getString(cursor.getColumnIndex("tag"))).equals("")){
 
-                    if (!tags.isEmpty()) {
-
-                        for (String s : tags) {
-                            if (tag.equals(s)) {
-
-                            } else {
-                                tags.add(tag);
-                                LogUtils.d("MainActivity", "tag: "+tag);
-                            }
-                        }
-
-                    }else{
-                        tags.add(tag);
-                        LogUtils.d("MainActivity", "tag: "+tag);
-                    }
+                    tags.add(tag);
+                    LogUtils.d("MainActivity", "tag: "+tag);
                 }
 
             }while (cursor.moveToNext());
         }
         cursor.close();
+
+        //去掉重复值
+        for  ( int  i  =   0 ; i  <  tags.size()  -   1 ; i ++ )   {
+            for  ( int  j  =  tags.size()  -   1 ; j  >  i; j -- )   {
+                if  (tags.get(j).equals(tags.get(i)))   {
+                    tags.remove(j);
+                }
+            }
+        }
         return tags;
+    }
+
+    public static List<Event> getEventsByTag(String tmpTag){
+        List<Event> events = new ArrayList<>();
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query("Event", null, null, null, null, null, null);
+
+        if (cursor.moveToFirst()){
+            do {
+
+                Event event = new Event();
+                int id = cursor.getInt(cursor.getColumnIndex("id"));
+                String username = cursor.getString(cursor.getColumnIndex("username"));
+                String name = cursor.getString(cursor.getColumnIndex("name"));
+                int mode = cursor.getInt(cursor.getColumnIndex("mode"));
+                String startTime = cursor.getString(cursor.getColumnIndex("startTime"));
+                long startTimeMillSeconds = cursor.getLong(cursor.getColumnIndex("startTimeMillSeconds"));
+                String endTime = cursor.getString(cursor.getColumnIndex("endTime"));
+                long endTimeMillSeconds = cursor.getLong(cursor.getColumnIndex("endTimeMillSeconds"));
+                String remindTime = cursor.getString(cursor.getColumnIndex("remindTime"));
+                int pri = cursor.getInt(cursor.getColumnIndex("pri"));
+                String address = cursor.getString(cursor.getColumnIndex("address"));
+                String remarks = cursor.getString(cursor.getColumnIndex("remarks"));
+                String tag = cursor.getString(cursor.getColumnIndex("tag"));
+                int isFinish = cursor.getInt(cursor.getColumnIndex("isFinish"));
+
+                event.setId(id);
+                LogUtils.d("MainActivity", "Event Id: "+id);
+                event.setUserName(username);
+                event.setName(name);
+                event.setMode(mode);
+                event.setStartTime(new BmobDate(TimeUtils.string2Date(startTime)));
+                event.setStartTimeMillSeconds(startTimeMillSeconds);
+                event.setEndTime(new BmobDate(TimeUtils.string2Date(endTime)));
+                event.setEndTimeMillSeconds(endTimeMillSeconds);
+                event.setRemindTime(new BmobDate(TimeUtils.string2Date(remindTime)));
+                event.setPri(pri);
+                LogUtils.d("MainActivity", "pri: "+pri);
+                event.setAddress(address);
+                event.setRemarks(remarks);
+                event.setTag(tag);
+                event.setIsFinish(isFinish);
+
+                if (tmpTag.equals(tag)){
+                    events.add(event);
+                }
+
+            }while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        return  events;
     }
 
     /**

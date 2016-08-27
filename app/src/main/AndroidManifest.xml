@@ -71,13 +71,16 @@
             android:theme="@style/Theme.AppCompat.Dialog">
         </activity>
         <activity
+            android:name=".ui.activities.IsFinishDialogActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Dialog"
-            android:name=".ui.activities.IsFinishDialogActivity">
+            android:theme="@style/Theme.AppCompat.Dialog">
         </activity>
+
         <service android:name=".service.RemindService">
         </service>
 
+        <activity android:name=".ui.activities.OrderEventsByTagActivity">
+        </activity>
     </application>
 
 </manifest>

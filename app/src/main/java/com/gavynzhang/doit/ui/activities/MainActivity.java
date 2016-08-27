@@ -3,6 +3,7 @@ package com.gavynzhang.doit.ui.activities;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -21,6 +22,7 @@ import android.widget.DatePicker;
 import android.widget.Toast;
 
 
+import com.facebook.stetho.common.LogUtil;
 import com.gavynzhang.doit.R;
 import com.gavynzhang.doit.app.BaseActivity;
 import com.gavynzhang.doit.app.state.LoginContext;
@@ -42,6 +44,7 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 
 import cn.bmob.v3.Bmob;
@@ -138,6 +141,18 @@ public class MainActivity extends BaseActivity
 
 //        Intent intent = new Intent(this, RemindService.class);
 //        startService(intent);
+
+        List<String> tags = getEventAllTags();
+
+
+
+        final Menu menu = navigationView.getMenu();
+        for (final String tag : tags) {
+            menu.add(tag)
+                    .setIcon(getResources().getDrawable(R.drawable.tag))
+                    .setTitle(tag);
+
+        }
     }
 
     @Override
@@ -191,10 +206,13 @@ public class MainActivity extends BaseActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
+
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -204,17 +222,29 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        String title = (String) item.getTitle();
 
-        if (id == R.id.login) {
-            SignInActivity.actionStart(MainActivity.this);
-        } else if (id == R.id.nav_gallery) {
+        List<String> tags = getEventAllTags();
 
-        } else if (id == R.id.nav_slideshow) {
+//        if (id == R.id.login) {
+//            SignInActivity.actionStart(MainActivity.this);
+//        } else if (id == R.id.nav_gallery) {
+//
+//        } else if (id == R.id.nav_slideshow) {
+//
+//        } else if (id == R.id.nav_manage) {
+//
+//        }  else if (id == R.id.source_agreement) {
+//
+//        }
 
-        } else if (id == R.id.nav_manage) {
-
-        }  else if (id == R.id.source_agreement) {
-
+        for (String tag : tags){
+            if (title.equals(tag)){
+//                Toast.makeText(MainActivity.this, "click tag: "+tag, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, OrderEventsByTagActivity.class);
+                intent.putExtra("tagName", tag);
+                startActivity(intent);
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -280,28 +310,24 @@ public class MainActivity extends BaseActivity
         if (cursor.moveToFirst()){
             do {
                 String tag;
-                if ((tag = cursor.getString(cursor.getColumnIndex("tag"))) != null){
+                if (!(tag = cursor.getString(cursor.getColumnIndex("tag"))).equals("")){
 
-                    if (!tags.isEmpty()) {
-
-                        for (String s : tags) {
-                            if (tag.equals(s)) {
-
-                            } else {
-                                tags.add(tag);
-                                LogUtils.d("MainActivity", "tag: "+tag);
-                            }
-                        }
-
-                    }else{
                         tags.add(tag);
                         LogUtils.d("MainActivity", "tag: "+tag);
-                    }
                 }
 
             }while (cursor.moveToNext());
         }
         cursor.close();
+
+        //去掉重复值
+        for  ( int  i  =   0 ; i  <  tags.size()  -   1 ; i ++ )   {
+            for  ( int  j  =  tags.size()  -   1 ; j  >  i; j -- )   {
+                if  (tags.get(j).equals(tags.get(i)))   {
+                    tags.remove(j);
+                }
+            }
+        }
         return tags;
     }
 
